@@ -1,4 +1,4 @@
-package shgo.innowise.trainee.songmicroservice.fileapi.service;
+package shgo.innowise.trainee.songmicroservice.fileapi.service.strategy;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -6,7 +6,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
@@ -15,26 +14,24 @@ import shgo.innowise.trainee.songmicroservice.fileapi.entity.SongData;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.StorageType;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 
 /**
  * Provides file operations in local storage.
  */
 @Service
 @Slf4j
-public class LocalStorageManager {
+public class LocalStorageStrategy implements StorageStrategy {
 
     private ResourceLoader resourceLoader;
-    @Value("${local-base-path}")
+    @Value("${local-base-path:temp-files/songs}")
     private String localBasePath;
-    @Value("${files-per-directory}")
+    @Value("${files-per-directory:300}")
     private int filesPerDirectory;
     private File currentDirectory;
 
     @Autowired
-    public LocalStorageManager(ResourceLoader resourceLoader) {
+    public LocalStorageStrategy(final ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
 
@@ -45,11 +42,12 @@ public class LocalStorageManager {
      * @return song data
      * @throws IOException file saving error
      */
-    public SongData saveSong(MultipartFile song) throws IOException {
+    @Override
+    public SongData saveSong(final MultipartFile song) throws IOException {
         File songFile = createFile(createDirectoryToSave(), song);
         FileUtils.copyInputStreamToFile(song.getInputStream(), songFile);
 
-        log.info(song.getOriginalFilename() + " was saved as " + songFile.getName());
+        log.debug(song.getOriginalFilename() + " was saved as " + songFile.getName());
         return new SongData(song.getOriginalFilename(), StorageType.LOCAL, songFile.getAbsolutePath(), null);
     }
 
@@ -59,7 +57,8 @@ public class LocalStorageManager {
      * @param songData song to download.
      * @return song file
      */
-    public Resource getSong(SongData songData){
+    @Override
+    public Resource getSong(final SongData songData) {
         return resourceLoader.getResource("file:///" + songData.getPath());
     }
 
@@ -93,11 +92,11 @@ public class LocalStorageManager {
      * Create song file in local storage.
      *
      * @param directory directory of song file
-     * @param song song file
+     * @param song      song file
      * @return created file
      * @throws IOException error by file creation
      */
-    private File createFile(File directory, MultipartFile song) throws IOException {
+    private File createFile(final File directory, final MultipartFile song) throws IOException {
         final int nameLength = 10;
         final String extension = FilenameUtils.getExtension(song.getOriginalFilename());
 

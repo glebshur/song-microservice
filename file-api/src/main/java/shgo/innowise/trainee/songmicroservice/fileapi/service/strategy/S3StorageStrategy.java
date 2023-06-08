@@ -1,4 +1,4 @@
-package shgo.innowise.trainee.songmicroservice.fileapi.service;
+package shgo.innowise.trainee.songmicroservice.fileapi.service.strategy;
 
 import io.awspring.cloud.s3.S3Template;
 import lombok.extern.slf4j.Slf4j;
@@ -21,15 +21,15 @@ import java.io.IOException;
  */
 @Service
 @Slf4j
-public class S3StorageManager {
+public class S3StorageStrategy implements StorageStrategy {
 
-    @Value("${bucket-name}")
+    @Value("${bucket-name:file-bucket}")
     private String bucketName;
     private S3Template s3Template;
     private S3Client s3Client;
 
     @Autowired
-    public S3StorageManager(S3Template s3Template, S3Client s3Client) {
+    public S3StorageStrategy(S3Template s3Template, S3Client s3Client) {
         this.s3Template = s3Template;
         this.s3Client = s3Client;
     }
@@ -41,11 +41,12 @@ public class S3StorageManager {
      * @return song data
      * @throws IOException error by file reading
      */
-    public SongData saveSong(MultipartFile song) throws IOException {
+    @Override
+    public SongData saveSong(final MultipartFile song) throws IOException {
         String key = generateKey();
         s3Template.upload(bucketName, key, song.getInputStream());
 
-        log.info(song.getOriginalFilename() + " was saved like " + key);
+        log.debug(song.getOriginalFilename() + " was saved like " + key);
         return new SongData(song.getOriginalFilename(), StorageType.S3, key, bucketName);
     }
 
@@ -55,7 +56,8 @@ public class S3StorageManager {
      * @param songData song data
      * @return song file
      */
-    public Resource getSong(SongData songData) {
+    @Override
+    public Resource getSong(final SongData songData) {
         return s3Template.download(songData.getBucketName(), songData.getPath());
     }
 
@@ -68,7 +70,7 @@ public class S3StorageManager {
         final int fileNameLength = 8;
         String name = RandomStringUtils.randomAlphanumeric(fileNameLength);
 
-        while (!exists(name)){
+        while (!exists(name)) {
             name = RandomStringUtils.random(fileNameLength);
         }
         return name;
@@ -80,7 +82,7 @@ public class S3StorageManager {
      * @param objectName object name
      * @return true, if exists; false, if doesn't exits
      */
-    private boolean exists(String objectName) {
+    private boolean exists(final String objectName) {
         HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
                 .bucket(bucketName)
                 .key(objectName)

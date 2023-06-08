@@ -21,6 +21,6 @@ server:
     include-message: always
 
 local-base-path: temp-files/songs
-files-per-directory: 3000
-bucket-name: file-bucket
+#files-per-directory: 300
+#bucket-name: file-bucket
 queue-name: file-enricher-queue

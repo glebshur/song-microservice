@@ -14,7 +14,7 @@ import shgo.innowise.trainee.songmicroservice.fileapi.entity.SongData;
 public class SqsProvider {
 
     private SqsTemplate sqsTemplate;
-    @Value("${queue-name}")
+    @Value("${queue-name:file-enricher-queue}")
     private String queueName;
 
     @Autowired
@@ -28,7 +28,7 @@ public class SqsProvider {
      * @param songData song data to send
      * @return send result
      */
-    public SendResult<String> sendSongData(SongData songData) {
+    public SendResult<String> sendSongData(final SongData songData) {
         return sqsTemplate.send(queueName, songData.getId().toString());
     }
 

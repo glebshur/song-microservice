@@ -11,10 +11,11 @@ import org.springframework.web.server.ResponseStatusException;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.SongData;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.StorageType;
 import shgo.innowise.trainee.songmicroservice.fileapi.repository.SongDataRepository;
+import shgo.innowise.trainee.songmicroservice.fileapi.service.strategy.LocalStorageStrategy;
+import shgo.innowise.trainee.songmicroservice.fileapi.service.strategy.S3StorageStrategy;
 import software.amazon.awssdk.core.exception.SdkClientException;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 
 /**
  * Contains main business logic of song processing.
@@ -22,18 +23,18 @@ import java.net.UnknownHostException;
 @Service
 @Slf4j
 public class SongService {
-    private S3StorageManager s3StorageManager;
-    private LocalStorageManager localStorageManager;
+    private S3StorageStrategy s3StorageStrategy;
+    private LocalStorageStrategy localStorageStrategy;
     private SongDataRepository songDataRepository;
     private SqsProvider sqsProvider;
 
     @Autowired
-    public SongService(S3StorageManager s3StorageManager,
-                       LocalStorageManager localStorageManager,
+    public SongService(S3StorageStrategy s3StorageStrategy,
+                       LocalStorageStrategy localStorageStrategy,
                        SongDataRepository songDataRepository,
                        SqsProvider sqsProvider) {
-        this.s3StorageManager = s3StorageManager;
-        this.localStorageManager = localStorageManager;
+        this.s3StorageStrategy = s3StorageStrategy;
+        this.localStorageStrategy = localStorageStrategy;
         this.songDataRepository = songDataRepository;
         this.sqsProvider = sqsProvider;
     }
@@ -45,14 +46,14 @@ public class SongService {
      * @return song data
      * @throws IOException error by file uploading
      */
-    public SongData uploadSong(MultipartFile song) throws IOException {
-        if(!isAudioFile(song)){
+    public SongData uploadSong(final MultipartFile song) throws IOException {
+        if (!isAudioFile(song)) {
             String message = song.getOriginalFilename() + " isn't an audio file";
             log.info(message);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
         }
 
-        if(songDataRepository.existsByOriginalName(song.getOriginalFilename())){
+        if (songDataRepository.existsByOriginalName(song.getOriginalFilename())) {
             String message = "Song with name " + song.getOriginalFilename() + " already exists";
             log.info(message);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
@@ -60,19 +61,19 @@ public class SongService {
 
         SongData songData;
         try {
-            songData = s3StorageManager.saveSong(song);
+            songData = s3StorageStrategy.saveSong(song);
         } catch (SdkClientException ex) {
             log.error("Cannot connect to S3 storage: " + ex.getMessage());
 
-            songData = localStorageManager.saveSong(song);
+            songData = localStorageStrategy.saveSong(song);
         }
 
         songData = songDataRepository.save(songData);
-        log.info("Data for song {} was saved to db", songData.getOriginalName());
+        log.debug("Data for song {} was saved to db", songData.getOriginalName());
 
-        try{
+        try {
             sqsProvider.sendSongData(songData);
-        } catch (MessagingOperationFailedException ex){
+        } catch (MessagingOperationFailedException ex) {
             log.error("Message sending failed: " + ex.getMessage());
         }
         return songData;
@@ -84,7 +85,7 @@ public class SongService {
      * @param id audio file id
      * @return audio file
      */
-    public Resource downloadSong(Long id) {
+    public Resource downloadSong(final Long id) {
         SongData songData = songDataRepository.findById(id)
                 .orElseThrow(() -> {
                     String message = "Song data with id " + id + " cannot be found";
@@ -93,10 +94,10 @@ public class SongService {
                 });
 
         Resource resource = null;
-        if(songData.getStorageType() == StorageType.S3){
-            resource = s3StorageManager.getSong(songData);
+        if (songData.getStorageType() == StorageType.S3) {
+            resource = s3StorageStrategy.getSong(songData);
         } else {
-            resource = localStorageManager.getSong(songData);
+            resource = localStorageStrategy.getSong(songData);
         }
 
         try {
@@ -119,7 +120,7 @@ public class SongService {
      * @param file multipart file to check
      * @return true, if it's audio file; false, if it isn't an audio file
      */
-    private boolean isAudioFile(MultipartFile file){
+    private boolean isAudioFile(final MultipartFile file) {
         String contentType = file.getContentType();
         String mimeType = "audio";
         return contentType != null && contentType.startsWith(mimeType);
