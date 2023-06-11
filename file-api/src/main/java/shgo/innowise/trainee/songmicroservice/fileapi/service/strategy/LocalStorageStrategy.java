@@ -26,7 +26,7 @@ public class LocalStorageStrategy implements StorageStrategy {
     private ResourceLoader resourceLoader;
     @Value("${local-base-path:temp-files/songs}")
     private String localBasePath;
-    @Value("${files-per-directory:300}")
+    @Value("${files-per-directory:3000}")
     private int filesPerDirectory;
     private File currentDirectory;
 

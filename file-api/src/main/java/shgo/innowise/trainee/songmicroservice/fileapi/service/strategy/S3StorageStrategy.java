@@ -2,6 +2,7 @@ package shgo.innowise.trainee.songmicroservice.fileapi.service.strategy;
 
 import io.awspring.cloud.s3.S3Template;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,7 @@ import shgo.innowise.trainee.songmicroservice.fileapi.entity.StorageType;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
 import java.io.IOException;
 
@@ -43,7 +45,7 @@ public class S3StorageStrategy implements StorageStrategy {
      */
     @Override
     public SongData saveSong(final MultipartFile song) throws IOException {
-        String key = generateKey();
+        String key = generateKey(FilenameUtils.getExtension(song.getOriginalFilename()));
         s3Template.upload(bucketName, key, song.getInputStream());
 
         log.debug(song.getOriginalFilename() + " was saved like " + key);
@@ -64,14 +66,15 @@ public class S3StorageStrategy implements StorageStrategy {
     /**
      * Generates key for S3 object.
      *
+     * @param extension file extension
      * @return generated key
      */
-    private String generateKey() {
+    private String generateKey(String extension) {
         final int fileNameLength = 8;
-        String name = RandomStringUtils.randomAlphanumeric(fileNameLength);
+        String name = RandomStringUtils.randomAlphanumeric(fileNameLength) + "." + extension;
 
-        while (!exists(name)) {
-            name = RandomStringUtils.random(fileNameLength);
+        while (exists(name)) {
+            name = RandomStringUtils.random(fileNameLength) + "." + extension;
         }
         return name;
     }
@@ -88,7 +91,12 @@ public class S3StorageStrategy implements StorageStrategy {
                 .key(objectName)
                 .build();
 
-        HeadObjectResponse response = s3Client.headObject(headObjectRequest);
-        return response.hasMetadata();
+        try {
+            s3Client.headObject(headObjectRequest);
+            return true;
+        } catch (NoSuchKeyException ex) {
+            log.debug(ex.getMessage());
+            return false;
+        }
     }
 }

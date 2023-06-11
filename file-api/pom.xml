@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>shgo.innowise.trainee.song-microservice</groupId>
 	<artifactId>file-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>file-api</name>
 	<description>File API for Song Microservice</description>
 	<properties>

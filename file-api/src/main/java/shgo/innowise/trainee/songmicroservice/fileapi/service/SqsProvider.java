@@ -31,5 +31,4 @@ public class SqsProvider {
     public SendResult<String> sendSongData(final SongData songData) {
         return sqsTemplate.send(queueName, songData.getId().toString());
     }
-
 }

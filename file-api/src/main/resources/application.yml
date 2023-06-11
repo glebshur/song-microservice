@@ -10,7 +10,9 @@ spring:
         secret-key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
       region:
         static: eu-west-1
-      endpoint: http://localhost:4566
+      endpoint: http://awslocal:4566
+      s3:
+        path-style-access-enabled: on
   servlet:
     multipart:
       max-file-size: 15MB
@@ -21,6 +23,6 @@ server:
     include-message: always
 
 local-base-path: temp-files/songs
-#files-per-directory: 300
-#bucket-name: file-bucket
+files-per-directory: 3000
+bucket-name: file-bucket
 queue-name: file-enricher-queue
