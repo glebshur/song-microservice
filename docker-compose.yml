@@ -1,0 +1,62 @@
+version: '3'
+
+services:
+  file_api:
+    build: ./file-api/
+    ports:
+      - 9000:9000
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres_container:5432/file_api_db"
+      SPRING_DATASOURCE_USERNAME: "postgres"
+      SPRING_DATASOURCE_PASSWORD: "postgres11"
+      SPRING_CLOUD_AWS_ENDPOINT: "http://awslocal:4566"
+    volumes:
+      - "file_api_local_data:/app/temp-files/songs"
+    depends_on:
+      - postgres_container
+
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME-localstack_main}"
+    hostname: "awslocal"
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    environment:
+      - DEBUG=${DEBUG-}
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - AWS_DEFAULT_REGION=eu-west-1
+      - HOSTNAME_EXTERNAL=awslocal
+    volumes:
+      - "./localstack/init-scripts.sh:/etc/localstack/init/ready.d/init-scripts.sh"
+      - "${LOCALSTACK_VOLUME_DIR:-./localstack/volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    
+  postgres_container:
+    image: 'postgres:13.1-alpine'
+    container_name: postgres_container
+    environment:
+      POSTGRES_DB: "file_api_db"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres11"
+    volumes:
+      - ./file-api/db:/docker-entrypoint-initdb.d
+      - pg_data:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:5.7
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "developer@enail.com"
+      PGADMIN_DEFAULT_PASSWORD: "pgadmin1"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+
+volumes:
+  file_api_local_data:
+  pg_data:
+  pgadmin-data:
