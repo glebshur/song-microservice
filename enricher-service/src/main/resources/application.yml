@@ -1,0 +1,30 @@
+camel:
+  component:
+    aws2-sqs:
+      access-key: AKIAIOSFODNN7EXAMPLE
+      secret-key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+      region: eu-west-1
+      amazon-a-w-s-host: http://awslocal:4566
+      override-endpoint: true
+      uri-endpoint-override: http://awslocal:4566
+
+#spring:
+#  servlet:
+#    multipart:
+#      max-file-size: 15MB
+#      max-request-size: 15MB
+spring:
+  application:
+    name: enricher-service
+server:
+  port: 10000
+  error:
+    include-message: always
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+
+delay: 1000
+consumer-queue: file-enricher-queue
+producer-queue: enricher-song-queue

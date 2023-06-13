@@ -10,10 +10,29 @@ services:
       SPRING_DATASOURCE_USERNAME: "postgres"
       SPRING_DATASOURCE_PASSWORD: "postgres11"
       SPRING_CLOUD_AWS_ENDPOINT: "http://awslocal:4566"
+      EUREKA_URI: "http://eureka-server:8761/eureka"
     volumes:
       - "file_api_local_data:/app/temp-files/songs"
     depends_on:
       - postgres_container
+      - localstack
+      - eureka-server
+
+  enricher-service:
+    build: ./enricher-service/
+    environment:
+      EUREKA_URI: "http://eureka-server:8761/eureka"
+    ports:
+      - 10000:10000
+    depends_on:
+      - postgres_container
+      - localstack
+      - eureka-server
+
+  eureka-server:
+    build: ./eureka-server/
+    ports:
+      - 8761:8761
 
   localstack:
     container_name: "${LOCALSTACK_DOCKER_NAME-localstack_main}"
@@ -41,7 +60,7 @@ services:
       POSTGRES_PASSWORD: "postgres11"
     volumes:
       - ./file-api/db:/docker-entrypoint-initdb.d
-      - pg_data:/var/lib/postgresql/data
+      #- pg_data:/var/lib/postgresql/data
 
   pgadmin:
     container_name: pgadmin
