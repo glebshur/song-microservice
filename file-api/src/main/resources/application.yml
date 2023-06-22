@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: file-api
   datasource:
     url: jdbc:postgresql://localhost:5432/file_api_db
     username: postgres
@@ -21,6 +23,10 @@ server:
   port: 9000
   error:
     include-message: always
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
 
 local-base-path: temp-files/songs
 files-per-directory: 3000
