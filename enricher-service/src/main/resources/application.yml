@@ -4,15 +4,9 @@ camel:
       access-key: AKIAIOSFODNN7EXAMPLE
       secret-key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
       region: eu-west-1
-      amazon-a-w-s-host: http://awslocal:4566
       override-endpoint: true
       uri-endpoint-override: http://awslocal:4566
 
-#spring:
-#  servlet:
-#    multipart:
-#      max-file-size: 15MB
-#      max-request-size: 15MB
 spring:
   application:
     name: enricher-service
@@ -28,3 +22,10 @@ eureka:
 delay: 1000
 consumer-queue: file-enricher-queue
 producer-queue: enricher-song-queue
+
+file-api-name: file-api
+
+spotify:
+  client-id: 4a67fa16eb1943e581d4853135ad4099
+  client-secret: 69d6db9055c64ed88c3fbafcb84227d5
+  token-endpoint: https://accounts.spotify.com/api/token

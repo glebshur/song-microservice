@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  file_api:
+  file-api:
     build: ./file-api/
     ports:
       - 9000:9000
@@ -28,6 +28,7 @@ services:
       - postgres_container
       - localstack
       - eureka-server
+      - file-api
 
   eureka-server:
     build: ./eureka-server/
