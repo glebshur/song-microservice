@@ -7,9 +7,6 @@ camel:
       override-endpoint: true
       uri-endpoint-override: http://awslocal:4566
 
-spring:
-  application:
-    name: enricher-service
 server:
   port: 10000
   error:

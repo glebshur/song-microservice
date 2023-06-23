@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/file_api_db
+    username: postgres
+    password: postgres11
+  cloud:
+    aws:
+      credentials:
+        access-key: AKIAIOSFODNN7EXAMPLE
+        secret-key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+      region:
+        static: eu-west-1
+      endpoint: http://awslocal:4566
+      s3:
+        path-style-access-enabled: on
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 15MB
+server:
+  port: 9000
+  error:
+    include-message: always
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+local-base-path: temp-files/songs
+files-per-directory: 3000
+bucket-name: file-bucket
+queue-name: file-enricher-queue
