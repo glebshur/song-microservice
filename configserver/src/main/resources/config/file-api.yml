@@ -18,13 +18,13 @@ spring:
       max-file-size: 15MB
       max-request-size: 15MB
 server:
-  port: 9000
+  port: 9010
   error:
     include-message: always
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+      defaultZone: http://localhost:8761/eureka
 
 local-base-path: temp-files/songs
 files-per-directory: 3000
