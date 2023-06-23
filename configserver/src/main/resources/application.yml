@@ -7,7 +7,7 @@ spring:
     config:
       server:
         native:
-          search-locations: classpath:/config
+          search-locations: ${NATIVE_LOCATIONS:classpath:/config}
 server:
   port: 8071
 eureka:
