@@ -1,5 +1,6 @@
 package shgo.innowise.trainee.songmicroservice.enricherservice.client;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -19,5 +20,6 @@ public interface FileApiClient {
      * @return file as resource
      */
     @GetMapping(value = "/files/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @CircuitBreaker(name = "fileApiClientBreaker")
     Resource downloadFile(final @PathVariable("id") Long id);
 }

@@ -1,6 +1,7 @@
 package shgo.innowise.trainee.songmicroservice.fileapi.service;
 
 import io.awspring.cloud.sqs.operations.MessagingOperationFailedException;
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -62,7 +63,7 @@ public class SongService {
         SongData songData;
         try {
             songData = s3StorageStrategy.saveSong(song);
-        } catch (SdkClientException ex) {
+        } catch (SdkClientException | CallNotPermittedException ex) {
             log.error("Cannot connect to S3 storage: " + ex.getMessage());
 
             songData = localStorageStrategy.saveSong(song);
