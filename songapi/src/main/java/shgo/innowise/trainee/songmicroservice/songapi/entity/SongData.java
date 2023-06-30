@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Contains data of song.
+ */
 @NoArgsConstructor
 @Setter
 @Getter

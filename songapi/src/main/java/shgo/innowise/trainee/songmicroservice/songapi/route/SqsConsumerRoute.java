@@ -9,6 +9,9 @@ import shgo.innowise.trainee.songmicroservice.songapi.dto.SongDataDto;
 import shgo.innowise.trainee.songmicroservice.songapi.mapper.SongDataDtoMapper;
 import shgo.innowise.trainee.songmicroservice.songapi.service.SongDataService;
 
+/**
+ * Camel route that consumes song data from aws sqs.
+ */
 @Component
 @Slf4j
 public class SqsConsumerRoute extends EndpointRouteBuilder {
@@ -26,13 +29,10 @@ public class SqsConsumerRoute extends EndpointRouteBuilder {
     @Override
     public void configure() {
         from(aws2Sqs("{{consumer-queue}}").deleteAfterRead(true).delay("{{delay:1000}}"))
-//                .log("${body}")
                 .unmarshal().json(JsonLibrary.Jackson, SongDataDto.class)
                 .process(exchange -> {
-//                    log.info("Body is string: {}", exchange.getMessage().getBody() instanceof String);
                     SongDataDto body = exchange.getMessage().getBody(SongDataDto.class);
                     songDataService.createSongData(songDataDtoMapper.songDataDtoToSongData(body));
-//                    log.debug("Song data for file with id {} is saving", songDataDto.getFileId());
                 });
     }
 }

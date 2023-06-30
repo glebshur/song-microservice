@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * DTO of song data.
+ */
 @NoArgsConstructor
 @Getter
 @Setter
