@@ -1,6 +1,8 @@
 spring:
   application:
-    name: eureka-server
+    name: song-api
+  profiles:
+    active: "default"
   cloud:
     config:
       uri: http://localhost:8071

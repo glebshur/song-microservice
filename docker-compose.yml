@@ -34,8 +34,6 @@ services:
     ports:
       - 10000:10000
     depends_on:
-      postgres_container:
-        condition: service_started
       localstack:
         condition: service_started
       eureka-server:
@@ -44,16 +42,29 @@ services:
         condition: service_started
       config-server:
         condition: service_healthy
+  
+  song-api:
+    build: ./songapi/
+    environment:
+      EUREKA_URI: "http://eureka-server:8761/eureka"
+      SPRING_PROFILES_ACTIVE: "dev"
+      SPRING_CLOUD_CONFIG_URI: "http://config-server:8071"
+    ports:
+      - 11000:11000
+    depends_on:
+      postgres_container: 
+        condition: service_started
+      localstack:
+        condition: service_started
+      eureka-server:
+        condition: service_started
+      config-server:
+        condition: service_healthy
 
   eureka-server:
     build: ./eureka-server/
-    environment:
-      SPRING_CLOUD_CONFIG_URI: "http://config-server:8071"
     ports:
       - 8761:8761
-    depends_on:
-      config-server:
-        condition: service_healthy
 
   config-server:
     build: ./configserver/
@@ -70,6 +81,8 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+    depends_on:
+      - eureka-server
 
   localstack:
     container_name: "${LOCALSTACK_DOCKER_NAME-localstack_main}"
@@ -92,11 +105,10 @@ services:
     image: 'postgres:13.1-alpine'
     container_name: postgres_container
     environment:
-      POSTGRES_DB: "file_api_db"
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres11"
     volumes:
-      - ./file-api/db:/docker-entrypoint-initdb.d
+      - ./postgres/db_init:/docker-entrypoint-initdb.d
       #- pg_data:/var/lib/postgresql/data
 
   pgadmin:

@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/song_api_db
+    username: postgres
+    password: postgres11
+
+camel:
+  component:
+    aws2-sqs:
+      access-key: AKIAIOSFODNN7EXAMPLE
+      secret-key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+      region: eu-west-1
+      override-endpoint: true
+      uri-endpoint-override: http://awslocal:4566
+
+server:
+  port: 11000
+  error:
+    include-message: always
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+delay: 1000
+consumer-queue: enricher-song-queue

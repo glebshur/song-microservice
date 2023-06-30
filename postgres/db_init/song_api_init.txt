@@ -1,0 +1,12 @@
+DROP TABLE IF EXISTS song_data;
+CREATE TABLE song_data (
+	sd_id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	file_id bigint UNIQUE NOT NULL,
+	"name" VARCHAR(255),
+	artist VARCHAR(255),
+	artist_link VARCHAR(255),
+	album VARCHAR(255),
+	album_link VARCHAR(255),
+	release_date VARCHAR(100),
+	duration bigint
+);
