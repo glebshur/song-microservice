@@ -26,6 +26,24 @@ eureka:
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
 
+management:
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+resilience4j:
+  circuitbreaker:
+    instances:
+      s3StorageBreaker:
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 3
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 3
+        sliding-window-size: 10
+        sliding-window-type: count_based
+
 local-base-path: temp-files/songs
 files-per-directory: 3000
 bucket-name: file-bucket

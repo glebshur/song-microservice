@@ -1,6 +1,7 @@
 package shgo.innowise.trainee.songmicroservice.fileapi.service.strategy;
 
 import io.awspring.cloud.s3.S3Template;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -44,6 +45,7 @@ public class S3StorageStrategy implements StorageStrategy {
      * @throws IOException error by file reading
      */
     @Override
+    @CircuitBreaker(name = "s3StorageBreaker")
     public SongData saveSong(final MultipartFile song) throws IOException {
         String key = generateKey(FilenameUtils.getExtension(song.getOriginalFilename()));
         s3Template.upload(bucketName, key, song.getInputStream());
