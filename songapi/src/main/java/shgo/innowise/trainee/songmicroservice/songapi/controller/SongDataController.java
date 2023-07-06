@@ -49,7 +49,7 @@ public class SongDataController {
      * @return list of song data dto
      */
     @GetMapping("/")
-    public List<SongDataDto> getSongsData(@RequestParam(required = false) String namePattern) {
+    public List<SongDataDto> getSongsData(@RequestParam(required = false) final String namePattern) {
         List<SongData> songDataList = namePattern == null ? songDataService.getAllSongData() :
                 songDataService.getAllSongData(namePattern);
         return songDataList.stream().map(songDataDtoMapper::songDataToSongDataDto).toList();
