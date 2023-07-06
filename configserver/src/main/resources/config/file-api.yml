@@ -17,6 +17,29 @@ spring:
     multipart:
       max-file-size: 15MB
       max-request-size: 15MB
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/song-microservice
+          jwk-set-uri: http://localhost:8080/realms/song-microservice/protocol/openid-connect/certs
+jwt:
+  auth:
+    converter:
+      client-id: file-api
+      principal-attribute: preferred_username
+#      client:
+#        registration:
+#          keycloak:
+#            client-id: file-api
+#            authorization-grant-type: authorization_code
+#            scope: openid
+#
+#        provider:
+#          keycloak:
+#            issuer-uri: http://localhost:8080/realms/song-microservice
+#            user-name-attribute: preferred_username
+
 server:
   port: 9000
   error:
