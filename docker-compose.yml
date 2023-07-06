@@ -13,6 +13,7 @@ services:
       EUREKA_URI: "http://eureka-server:8761/eureka"
       SPRING_PROFILES_ACTIVE: "dev"
       SPRING_CLOUD_CONFIG_URI: "http://config-server:8071"
+      JWT_ISSUER_URI: "http://keycloak:8080/realms/song-microservice"
     volumes:
       - "file_api_local_data:/app/temp-files/songs"
     depends_on:
@@ -84,6 +85,20 @@ services:
     depends_on:
       - eureka-server
 
+  gateway:
+    build: ./gateway/
+    environment:
+      EUREKA_URI: "http://eureka-server:8761/eureka"
+      SPRING_PROFILES_ACTIVE: "dev"
+      SPRING_CLOUD_CONFIG_URI: "http://config-server:8071"
+    ports:
+      - 8091:8091
+    depends_on:
+      config-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+
   localstack:
     container_name: "${LOCALSTACK_DOCKER_NAME-localstack_main}"
     hostname: "awslocal"
@@ -100,6 +115,33 @@ services:
       - "./localstack/init-scripts.sh:/etc/localstack/init/ready.d/init-scripts.sh"
       - "${LOCALSTACK_VOLUME_DIR:-./localstack/volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
+  
+  keycloak:
+    image: quay.io/keycloak/keycloak:20.0.0       
+    command: start-dev
+    container_name: keycloak
+    environment:
+      KC_HOSTNAME: keycloak
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin           
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres_keycloak:5432/keycloak
+      KC_DB_PASSWORD: postgres11
+      KC_DB_USERNAME: postgres
+    ports:      
+      - "8080:8080"      
+    depends_on:      
+      - postgres_keycloak
+
+  postgres_keycloak:
+    image: 'postgres:13.1-alpine'
+    container_name: postgres_keycloak
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres11"
+    volumes:
+      - pg_keycloak_data:/var/lib/postgresql/data
     
   postgres_container:
     image: 'postgres:13.1-alpine'
@@ -128,3 +170,4 @@ volumes:
   file_api_local_data:
   pg_data:
   pgadmin-data:
+  pg_keycloak_data:
