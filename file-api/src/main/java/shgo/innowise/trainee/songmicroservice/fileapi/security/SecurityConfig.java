@@ -12,6 +12,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
+/**
+ * Security configuration.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity()

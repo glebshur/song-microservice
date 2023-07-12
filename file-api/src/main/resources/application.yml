@@ -23,28 +23,11 @@ spring:
         jwt:
           issuer-uri: ${JWT_ISSUER_URI:http://localhost:8080/realms/song-microservice}
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
-
 jwt:
   auth:
     converter:
       client-id: file-api
       principal-attribute: preferred_username
-#      client:
-#        registration:
-#          keycloak:
-#            client-id: file-api
-#            authorization-grant-type: authorization_code
-#            scope: openid
-#
-#        provider:
-#          keycloak:
-#            issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/realms/song-microservice}
-#            user-name-attribute: preferred_username
-#jwt:
-#  auth:
-#    converter:
-#      resource-id: file-api
-#      principal-attribute: preferred_username
 
 server:
   port: 9000

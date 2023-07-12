@@ -9,11 +9,6 @@ spring:
         jwt:
           issuer-uri: http://keycloak:8080/realms/song-microservice
           jwk-set-uri: http://keycloak:8080/realms/song-microservice/protocol/openid-connect/certs
-#      client:
-#        provider:
-#          keycloak:
-#            issuer-uri: http://keycloak:8080/realms/song-microservice
-#            user-name-attribute: preferred_username
 
 eureka:
   client:

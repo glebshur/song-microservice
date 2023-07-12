@@ -28,17 +28,6 @@ jwt:
     converter:
       client-id: file-api
       principal-attribute: preferred_username
-#      client:
-#        registration:
-#          keycloak:
-#            client-id: file-api
-#            authorization-grant-type: authorization_code
-#            scope: openid
-#
-#        provider:
-#          keycloak:
-#            issuer-uri: http://localhost:8080/realms/song-microservice
-#            user-name-attribute: preferred_username
 
 server:
   port: 9000

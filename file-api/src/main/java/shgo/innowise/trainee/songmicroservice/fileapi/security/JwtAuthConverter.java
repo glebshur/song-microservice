@@ -19,6 +19,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Converts jwt token from Keycloak.
+ */
 @Component
 public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
@@ -48,7 +51,13 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
 
     }
 
-    private String gerPrincipleClaimName(Jwt jwt) {
+    /**
+     * Get principle claim name value.
+     *
+     * @param jwt jwt token
+     * @return claim name value
+     */
+    private String gerPrincipleClaimName(final Jwt jwt) {
         String claimName = JwtClaimNames.SUB;
         if (principleAttribute != null) {
             claimName = principleAttribute;
@@ -56,7 +65,13 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
         return jwt.getClaim(claimName);
     }
 
-    private Collection<? extends GrantedAuthority> extractResourceRoles(Jwt jwt) {
+    /**
+     * Extracts roles of specified client from Keycloak token.
+     *
+     * @param jwt jwt token
+     * @return collection of authorities
+     */
+    private Collection<? extends GrantedAuthority> extractResourceRoles(final Jwt jwt) {
         Map<String, Object> resourceAccess;
         Map<String, Object> resource;
         Collection<String> resourceRoles;
@@ -71,9 +86,8 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
         resource = (Map<String, Object>) resourceAccess.get(clientId);
         resourceRoles = (Collection<String>) resource.get(ROLES_CODE);
 
-        return resourceRoles
-                .stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // adds default role's prefix in spring security
+        return resourceRoles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // adds default role's prefix for spring security
                 .collect(Collectors.toSet());
     }
 }
