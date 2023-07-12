@@ -44,3 +44,16 @@ spotify:
   client-id: 4a67fa16eb1943e581d4853135ad4099
   client-secret: 69d6db9055c64ed88c3fbafcb84227d5
   token-endpoint: https://accounts.spotify.com/api/token
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: enricher-service
+            client-secret: kFRYVVxInxLIETFGGROc3kcaLhaKFcqH
+            authorization-grant-type: client_credentials
+        provider:
+          keycloak:
+            token-uri: http://localhost:8080/realms/song-microservice/protocol/openid-connect/token
