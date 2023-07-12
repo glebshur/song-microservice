@@ -1,6 +1,7 @@
 package shgo.innowise.trainee.songmicroservice.songapi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,6 +64,7 @@ public class SongDataController {
      * @return updated song data dto
      */
     @PutMapping("/{id}/update")
+    @PreAuthorize("hasRole('ADMIN')")
     public SongDataDto updateSongData(@PathVariable final Long id,
                                       @RequestBody final SongDataDto songDataDto) {
         return songDataDtoMapper.songDataToSongDataDto(
@@ -75,6 +77,7 @@ public class SongDataController {
      * @param id song data's id
      */
     @DeleteMapping("/{id}/delete")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteSongData(@PathVariable final Long id) {
         songDataService.deleteSongData(id);
     }
