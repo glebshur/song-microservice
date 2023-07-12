@@ -3,6 +3,17 @@ spring:
     url: jdbc:postgresql://localhost:5432/song_api_db
     username: postgres
     password: postgres11
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8080/realms/song-microservice}
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+jwt:
+  auth:
+    converter:
+      client-id: song-api
+      principal-attribute: preferred_username
 
 camel:
   component:

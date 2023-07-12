@@ -3,6 +3,12 @@ spring:
     url: jdbc:postgresql://postgres_container:5432/file_api_db
     username: postgres
     password: postgres11
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/song-microservice
+          jwk-set-uri: http://keycloak:8080/realms/song-microservice/protocol/openid-connect/certs
 
 eureka:
   client:

@@ -32,6 +32,7 @@ services:
       EUREKA_URI: "http://eureka-server:8761/eureka"
       SPRING_PROFILES_ACTIVE: "dev"
       SPRING_CLOUD_CONFIG_URI: "http://config-server:8071"
+      KEYCLOAK_TOKEN_URI: "http://keycloak:8080/realms/song-microservice/protocol/openid-connect/token"
     ports:
       - 10000:10000
     depends_on:

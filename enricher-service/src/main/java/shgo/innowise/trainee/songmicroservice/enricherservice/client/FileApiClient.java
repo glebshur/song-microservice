@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 /**
  * Feign client of File API.
  */
-@FeignClient("${file-api-name:file-api}")
+@FeignClient(value = "${file-api-name:file-api}", configuration = FileApiAuthConfiguration.class)
 public interface FileApiClient {
 
     /**

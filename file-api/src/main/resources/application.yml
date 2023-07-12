@@ -17,6 +17,18 @@ spring:
     multipart:
       max-file-size: 15MB
       max-request-size: 15MB
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8080/realms/song-microservice}
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+jwt:
+  auth:
+    converter:
+      client-id: file-api
+      principal-attribute: preferred_username
+
 server:
   port: 9000
   error:
