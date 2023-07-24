@@ -43,6 +43,7 @@ public class SecurityConfig {
                 .jwtAuthenticationConverter(jwtAuthConverter);
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.oauth2Client();
         return http.build();
     }
 }

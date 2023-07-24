@@ -66,6 +66,16 @@ public class S3StorageStrategy implements StorageStrategy {
     }
 
     /**
+     * Deletes song from AWS S3 storage.
+     *
+     * @param songData song to delete
+     */
+    @Override
+    public void deleteSong(SongData songData) {
+        s3Template.deleteObject(songData.getBucketName(), songData.getPath());
+    }
+
+    /**
      * Generates key for S3 object.
      *
      * @param extension file extension

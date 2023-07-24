@@ -9,6 +9,16 @@ spring:
         jwt:
           issuer-uri: http://localhost:8080/realms/song-microservice
           jwk-set-uri: http://localhost:8080/realms/song-microservice/protocol/openid-connect/certs
+      client:
+        registration:
+          keycloak:
+            client-id: song-api
+            client-secret: vuWm5xl2QBBA1I8sovk0waJWxBW8888u
+            authorization-grant-type: client_credentials
+        provider:
+          keycloak:
+            token-uri: http://localhost:8080/realms/song-microservice/protocol/openid-connect/token
+
 jwt:
   auth:
     converter:
@@ -35,3 +45,5 @@ eureka:
 
 delay: 1000
 consumer-queue: enricher-song-queue
+
+file-api-name: file-api
