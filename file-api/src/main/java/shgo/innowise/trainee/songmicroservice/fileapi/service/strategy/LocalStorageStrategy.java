@@ -63,6 +63,17 @@ public class LocalStorageStrategy implements StorageStrategy {
     }
 
     /**
+     * Deletes song from local storage.
+     *
+     * @param songData song to delete
+     */
+    @Override
+    public void deleteSong(SongData songData) {
+        File songFile = FileUtils.getFile(songData.getPath());
+        FileUtils.deleteQuietly(songFile);
+    }
+
+    /**
      * Creates directory for song file.
      *
      * @return create directory

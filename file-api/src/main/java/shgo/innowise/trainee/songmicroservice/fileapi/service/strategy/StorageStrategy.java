@@ -27,4 +27,11 @@ public interface StorageStrategy {
      * @return song file
      */
     Resource getSong(final SongData songData);
+
+    /**
+     * Deletes song from the storage.
+     *
+     * @param songData song to delete
+     */
+    void deleteSong(final SongData songData);
 }

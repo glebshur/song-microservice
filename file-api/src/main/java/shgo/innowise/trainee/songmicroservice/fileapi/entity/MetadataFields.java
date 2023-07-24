@@ -1,4 +1,4 @@
-package shgo.innowise.trainee.songmicroservice.enricherservice.entity;
+package shgo.innowise.trainee.songmicroservice.fileapi.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,10 +8,11 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum AudioMetadataFields {
+public enum MetadataFields {
     NAME("dc:title"),
     ALBUM("xmpDM:album"),
     ARTIST("xmpDM:artist"),
-    RELEASE_DATE("xmpDM:releaseDate");
+    RELEASE_DATE("xmpDM:releaseDate"),
+    DURATION("xmpDM:duration");
     private final String code;
 }

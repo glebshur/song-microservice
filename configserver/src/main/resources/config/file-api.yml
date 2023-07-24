@@ -23,6 +23,16 @@ spring:
         jwt:
           issuer-uri: http://localhost:8080/realms/song-microservice
           jwk-set-uri: http://localhost:8080/realms/song-microservice/protocol/openid-connect/certs
+      client:
+        registration:
+          keycloak:
+            client-id: file-api
+            client-secret: w05Cv6FPrhjwWh0JDrRmOadc40LOe30o
+            authorization-grant-type: client_credentials
+        provider:
+          keycloak:
+            token-uri: http://localhost:8080/realms/song-microservice/protocol/openid-connect/token
+
 jwt:
   auth:
     converter:
@@ -60,3 +70,5 @@ local-base-path: temp-files/songs
 files-per-directory: 3000
 bucket-name: file-bucket
 queue-name: file-enricher-queue
+
+song-api-name: song-api
