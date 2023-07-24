@@ -6,6 +6,7 @@ import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import shgo.innowise.trainee.songmicroservice.songapi.client.FileApiClient;
 import shgo.innowise.trainee.songmicroservice.songapi.dto.SongDataDto;
 import shgo.innowise.trainee.songmicroservice.songapi.entity.SongData;
 import shgo.innowise.trainee.songmicroservice.songapi.repository.SongDataRepository;
@@ -20,10 +21,13 @@ import java.util.List;
 public class SongDataService {
 
     private SongDataRepository songDataRepository;
+    private FileApiClient fileApiClient;
 
     @Autowired
-    public SongDataService(SongDataRepository songDataRepository) {
+    public SongDataService(SongDataRepository songDataRepository,
+                           FileApiClient fileApiClient) {
         this.songDataRepository = songDataRepository;
+        this.fileApiClient = fileApiClient;
     }
 
     /**
@@ -63,7 +67,7 @@ public class SongDataService {
     /**
      * Updates song data.
      *
-     * @param id song data's id
+     * @param id          song data's id
      * @param songDataDto dto with data to update
      * @return update song data
      */
@@ -89,8 +93,17 @@ public class SongDataService {
      * @param id song data's id
      */
     public void deleteSongData(final Long id) {
+        SongData songData = songDataRepository.findById(id)
+                .orElse(null);
+
+        if(songData == null) { // prevents looping on deletion
+            log.info("Song data with id {} cannot be found", id);
+            return;
+        }
+
         log.info("Deleting song data with id {}", id);
         songDataRepository.deleteById(id);
+        fileApiClient.deleteFile(id);
     }
 
     /**
@@ -99,7 +112,7 @@ public class SongDataService {
      * @param songData song data to create
      * @return created song data
      */
-    public SongData createSongData(final SongData songData){
+    public SongData createSongData(final SongData songData) {
         log.info("Saving song data with name {}", songData.getName());
         return songDataRepository.save(songData);
     }
