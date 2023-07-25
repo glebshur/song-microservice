@@ -5,11 +5,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import shgo.innowise.trainee.songmicroservice.songapi.controller.request.SongDataRequest;
 import shgo.innowise.trainee.songmicroservice.songapi.dto.SongDataDto;
 import shgo.innowise.trainee.songmicroservice.songapi.entity.SongData;
 import shgo.innowise.trainee.songmicroservice.songapi.mapper.SongDataDtoMapper;
@@ -44,15 +46,14 @@ public class SongDataController {
     }
 
     /**
-     * Get all songs data by name pattern.
+     * Get page with songs data by name, album and artist patterns.
      *
-     * @param namePattern optional request param, which is a string that contains the song name
+     * @param songDataRequest request object for retrieving data
      * @return list of song data dto
      */
-    @GetMapping("/")
-    public List<SongDataDto> getSongsData(@RequestParam(required = false) final String namePattern) {
-        List<SongData> songDataList = namePattern == null ? songDataService.getAllSongData() :
-                songDataService.getAllSongData(namePattern);
+    @PostMapping("/")
+    public List<SongDataDto> getSongsData(@RequestBody SongDataRequest songDataRequest) {
+        List<SongData> songDataList = songDataService.getAllSongData(songDataRequest);
         return songDataList.stream().map(songDataDtoMapper::songDataToSongDataDto).toList();
     }
 

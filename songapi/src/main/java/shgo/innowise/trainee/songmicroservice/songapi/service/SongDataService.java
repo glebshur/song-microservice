@@ -1,14 +1,19 @@
 package shgo.innowise.trainee.songmicroservice.songapi.service;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ResponseStatusException;
 import shgo.innowise.trainee.songmicroservice.songapi.client.FileApiClient;
+import shgo.innowise.trainee.songmicroservice.songapi.controller.request.SongDataRequest;
 import shgo.innowise.trainee.songmicroservice.songapi.dto.SongDataDto;
 import shgo.innowise.trainee.songmicroservice.songapi.entity.SongData;
+import shgo.innowise.trainee.songmicroservice.songapi.repository.OffsetLimitPageRequest;
 import shgo.innowise.trainee.songmicroservice.songapi.repository.SongDataRepository;
 
 import java.util.List;
@@ -18,6 +23,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
+@Validated
 public class SongDataService {
 
     private SongDataRepository songDataRepository;
@@ -46,22 +52,15 @@ public class SongDataService {
     }
 
     /**
-     * Retrieves all songs data from database.
+     * Retrieves songs data by name, artist and album.
      *
-     * @return list of songs data
-     */
-    public List<SongData> getAllSongData() {
-        return Streamable.of(songDataRepository.findAll()).toList();
-    }
-
-    /**
-     * Retrieves songs data by name.
-     *
-     * @param namePattern string that contains the song name
+     * @param songDataRequest song data retrieval request
      * @return list of song data
      */
-    public List<SongData> getAllSongData(final String namePattern) {
-        return songDataRepository.findAllByNameContains(namePattern);
+    public List<SongData> getAllSongData(@Valid final SongDataRequest songDataRequest) {
+        return songDataRepository.findAllByNameContainsAndArtistContainsAndAlbumContains(songDataRequest.getName(),
+                songDataRequest.getArtist(), songDataRequest.getAlbum(),
+                new OffsetLimitPageRequest(songDataRequest.getLimit(), songDataRequest.getOffset()));
     }
 
     /**
@@ -96,7 +95,7 @@ public class SongDataService {
         SongData songData = songDataRepository.findById(id)
                 .orElse(null);
 
-        if(songData == null) { // prevents looping on deletion
+        if (songData == null) { // prevents looping on deletion
             log.info("Song data with id {} cannot be found", id);
             return;
         }
