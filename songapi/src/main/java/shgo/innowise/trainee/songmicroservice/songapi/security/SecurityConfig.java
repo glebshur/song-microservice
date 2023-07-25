@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.session.RegisterSessionAu
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 /**
  * Security configuration.
@@ -39,8 +40,9 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers(GET, "/songs-data/{id}").permitAll()
-                .requestMatchers(GET,"/songs-data/").permitAll()
-                .anyRequest().authenticated();
+                .requestMatchers(POST, "/songs-data/").permitAll()
+                .anyRequest()
+                .authenticated();
         http.oauth2ResourceServer()
                 .jwt()
                 .jwtAuthenticationConverter(jwtAuthConverter);
