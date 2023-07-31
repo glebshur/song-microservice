@@ -13,6 +13,11 @@ import shgo.innowise.trainee.songmicroservice.fileapi.entity.Metadata;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.MetadataFields;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoField;
 
 /**
  * Retrieves metadata from audio files.
@@ -23,6 +28,10 @@ public class MetadataProvider {
 
     private final AutoDetectParser parser;
     private final DefaultDetector detector;
+    private final DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder().appendPattern("yyyy")
+            .parseDefaulting(ChronoField.MONTH_OF_YEAR, 1)
+            .parseDefaulting(ChronoField.DAY_OF_MONTH, 1)
+            .toFormatter();
 
     @Autowired
     public MetadataProvider() {
@@ -49,7 +58,7 @@ public class MetadataProvider {
         audioMetadata.setName(metadata.get(MetadataFields.NAME.getCode()));
         audioMetadata.setAlbum(metadata.get(MetadataFields.ALBUM.getCode()));
         audioMetadata.setArtist(metadata.get(MetadataFields.ARTIST.getCode()));
-        audioMetadata.setReleaseDate(metadata.get(MetadataFields.RELEASE_DATE.getCode()));
+        audioMetadata.setReleaseDate(getReleaseDate(metadata));
         audioMetadata.setDuration(getDuration(metadata));
         return audioMetadata;
     }
@@ -68,5 +77,23 @@ public class MetadataProvider {
             log.error(ex.getMessage());
             return null;
         }
+    }
+
+    /**
+     * Retrieves release date from metadata.
+     *
+     * @param metadata file metadata
+     * @return release date
+     */
+    private LocalDate getReleaseDate(org.apache.tika.metadata.Metadata metadata) {
+        LocalDate releaseDate = null;
+
+        try {
+            releaseDate = LocalDate.parse(metadata.get(MetadataFields.RELEASE_DATE.getCode()), dateFormatter);
+        } catch (DateTimeParseException ex) {
+            log.error("Error during data parsing: " + ex.getMessage());
+        }
+
+        return releaseDate;
     }
 }

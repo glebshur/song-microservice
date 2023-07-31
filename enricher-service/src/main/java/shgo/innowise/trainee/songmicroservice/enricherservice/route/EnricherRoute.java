@@ -9,7 +9,10 @@ import org.apache.camel.builder.endpoint.EndpointRouteBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import shgo.innowise.trainee.songmicroservice.enricherservice.entity.AudioMetadata;
+import shgo.innowise.trainee.songmicroservice.enricherservice.entity.DatePrecision;
 import shgo.innowise.trainee.songmicroservice.enricherservice.service.SpotifyTokenProvider;
+
+import java.time.LocalDate;
 
 /**
  * Camel route that enriches metadata by querying from Spotify.
@@ -93,7 +96,22 @@ public class EnricherRoute extends EndpointRouteBuilder {
         metadata.setAlbumLink(trackNode.get("album").get("external_urls").get("spotify").asText());
         metadata.setArtistLink(trackNode.get("artists").get(0).get("external_urls").get("spotify").asText());
         metadata.setDuration(trackNode.get("duration_ms").asLong());
-
+        metadata.setReleaseDate(getReleaseDate(trackNode));
         return metadata;
+    }
+
+    private LocalDate getReleaseDate(JsonNode trackNode) {
+        LocalDate localDate = null;
+
+        try {
+            String datePrecision = trackNode.get("album").get("release_date_precision").asText();
+            localDate = LocalDate.parse(trackNode.get("album").get("release_date").asText(),
+                    DatePrecision.valueOfByCode(datePrecision).getFormatter());
+        }
+        catch (IllegalArgumentException ex){
+            log.error(ex.getMessage());
+        }
+
+        return localDate;
     }
 }

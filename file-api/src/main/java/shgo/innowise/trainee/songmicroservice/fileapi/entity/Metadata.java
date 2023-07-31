@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 /**
  * Represents metadata of audio file.
  */
@@ -28,7 +30,7 @@ public class Metadata {
     @Column(name = "album")
     private String album;
     @Column(name = "release_date")
-    private String releaseDate;
+    private LocalDate releaseDate;
     @Column(name = "duration")
     private Long duration;
 }

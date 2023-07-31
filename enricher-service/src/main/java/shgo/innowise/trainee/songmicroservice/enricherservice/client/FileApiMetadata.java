@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 /**
  * Represents response from File API.
  */
@@ -15,6 +17,6 @@ public class FileApiMetadata {
     private String name;
     private String artist;
     private String album;
-    private String releaseDate;
+    private LocalDate releaseDate;
     private Long duration;
 }

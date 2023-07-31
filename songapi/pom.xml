@@ -82,6 +82,11 @@
 			<artifactId>camel-jackson-starter</artifactId>
 			<version>${camel.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>2.14.3</version>
+		</dependency>
 
 		<!--Feign client with auth-->
 		<dependency>
