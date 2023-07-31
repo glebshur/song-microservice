@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 /**
  * Represents metadata of audio file.
  */
@@ -18,6 +20,6 @@ public class AudioMetadata {
     private String artistLink;
     private String album;
     private String albumLink;
-    private String releaseDate;
+    private LocalDate releaseDate;
     private Long duration;
 }
