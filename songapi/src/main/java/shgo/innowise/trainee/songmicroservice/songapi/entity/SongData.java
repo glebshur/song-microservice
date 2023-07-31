@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 /**
  * Contains data of song.
  */
@@ -24,6 +26,6 @@ public class SongData {
     private String artistLink;
     private String album;
     private String albumLink;
-    private String releaseDate;
+    private LocalDate releaseDate;
     private Long duration;
 }
