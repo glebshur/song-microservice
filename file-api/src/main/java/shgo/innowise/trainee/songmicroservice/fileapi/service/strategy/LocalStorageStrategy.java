@@ -19,7 +19,7 @@ import java.io.IOException;
 /**
  * Provides file operations in local storage.
  */
-@Service
+@Service("local-storage")
 @Slf4j
 public class LocalStorageStrategy implements StorageStrategy {
 
@@ -31,8 +31,10 @@ public class LocalStorageStrategy implements StorageStrategy {
     private File currentDirectory;
 
     @Autowired
-    public LocalStorageStrategy(final ResourceLoader resourceLoader) {
+    public LocalStorageStrategy(final ResourceLoader resourceLoader,
+                                StorageStrategyRegistry registry) {
         this.resourceLoader = resourceLoader;
+        registry.register(StorageType.LOCAL, this);
     }
 
     /**

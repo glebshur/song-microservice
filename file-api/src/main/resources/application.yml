@@ -71,3 +71,11 @@ bucket-name: file-bucket
 queue-name: file-enricher-queue
 
 song-api-name: song-api
+
+main-storage: minio-storage
+
+minio:
+  endpoint: http://localhost:9000
+  access-key: Q5keHuvP7E0DTTCYA8Te
+  secret-key: fea9nw5p9wTK40V3CVRXhtZDvhZXZwmdhd1qYLqV
+  bucket-name: file-bucket

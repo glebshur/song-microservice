@@ -152,7 +152,7 @@ services:
       POSTGRES_PASSWORD: "postgres11"
     volumes:
       - ./postgres/db_init:/docker-entrypoint-initdb.d
-      #- pg_data:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
 
   pgadmin:
     container_name: pgadmin
@@ -166,9 +166,22 @@ services:
     ports:
       - "5050:80"
     restart: unless-stopped
+  
+  minio:
+    image: quay.io/minio/minio:RELEASE.2023-07-21T21-12-44Z
+    command: server --console-address ":9091" /data
+    ports:
+      - "9090:9000"
+      - "9091:9091"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: superadmin
+    volumes:
+      - minio_data:/data
 
 volumes:
   file_api_local_data:
   pg_data:
   pgadmin-data:
   pg_keycloak_data:
+  minio_data:
