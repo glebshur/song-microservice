@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.exception.TikaException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,12 +18,12 @@ import org.xml.sax.SAXException;
 import shgo.innowise.trainee.songmicroservice.fileapi.client.SongApiClient;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.Metadata;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.SongData;
-import shgo.innowise.trainee.songmicroservice.fileapi.entity.StorageType;
+import shgo.innowise.trainee.songmicroservice.fileapi.exception.StorageException;
 import shgo.innowise.trainee.songmicroservice.fileapi.repository.MetadataRepository;
 import shgo.innowise.trainee.songmicroservice.fileapi.repository.SongDataRepository;
 import shgo.innowise.trainee.songmicroservice.fileapi.service.strategy.LocalStorageStrategy;
-import shgo.innowise.trainee.songmicroservice.fileapi.service.strategy.S3StorageStrategy;
 import shgo.innowise.trainee.songmicroservice.fileapi.service.strategy.StorageStrategy;
+import shgo.innowise.trainee.songmicroservice.fileapi.service.strategy.StorageStrategyRegistry;
 import software.amazon.awssdk.core.exception.SdkClientException;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ import java.io.IOException;
 @Service
 @Slf4j
 public class SongService {
-    private final S3StorageStrategy s3StorageStrategy;
+    private final StorageStrategy mainStorage;
     private final LocalStorageStrategy localStorageStrategy;
     private final SongDataRepository songDataRepository;
     private final MetadataRepository metadataRepository;
@@ -41,17 +42,19 @@ public class SongService {
     private final SqsProvider sqsProvider;
     private final SongApiClient songApiClient;
     private final TransactionTemplate transactionTemplate;
+    private final StorageStrategyRegistry storageStrategyRegistry;
 
     @Autowired
-    public SongService(S3StorageStrategy s3StorageStrategy,
+    public SongService(@Qualifier("mainStorage") StorageStrategy mainStorage,
                        LocalStorageStrategy localStorageStrategy,
                        SongDataRepository songDataRepository,
                        MetadataRepository metadataRepository,
                        MetadataProvider metadataProvider,
                        SqsProvider sqsProvider,
                        SongApiClient songApiClient,
-                       PlatformTransactionManager platformTransactionManager) {
-        this.s3StorageStrategy = s3StorageStrategy;
+                       PlatformTransactionManager platformTransactionManager,
+                       StorageStrategyRegistry storageStrategyRegistry) {
+        this.mainStorage = mainStorage;
         this.localStorageStrategy = localStorageStrategy;
         this.songDataRepository = songDataRepository;
         this.metadataRepository = metadataRepository;
@@ -59,6 +62,7 @@ public class SongService {
         this.sqsProvider = sqsProvider;
         this.songApiClient = songApiClient;
         this.transactionTemplate = new TransactionTemplate(platformTransactionManager);
+        this.storageStrategyRegistry = storageStrategyRegistry;
     }
 
     /**
@@ -86,9 +90,9 @@ public class SongService {
 
         SongData songData;
         try {
-            songData = s3StorageStrategy.saveSong(song);
-        } catch (SdkClientException | CallNotPermittedException ex) {
-            log.error("Cannot connect to S3 storage: " + ex.getMessage());
+            songData = mainStorage.saveSong(song);
+        } catch (SdkClientException | CallNotPermittedException | StorageException ex) {
+            log.error("Error in main storage: " + ex.getMessage());
 
             songData = localStorageStrategy.saveSong(song);
         }
@@ -123,15 +127,16 @@ public class SongService {
                 });
 
         Resource resource = null;
-        resource = getStorage(songData).getSong(songData);
 
         try {
+            resource = storageStrategyRegistry.getStorageStrategy(songData.getStorageType())
+                    .getSong(songData);
             if (!resource.exists()) {
                 log.error("File with id {} doesn't exists by path {}", songData.getId(), songData.getPath());
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "File with id "
                         + songData.getId() + " doesn't exists");
             }
-        } catch (SdkClientException ex) {
+        } catch (SdkClientException | StorageException ex) {
             log.error("File accessing error: " + ex.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "Cannot access file with id " + id);
@@ -148,7 +153,7 @@ public class SongService {
         SongData songData = songDataRepository.findById(id)
                 .orElse(null);
 
-        if(songData == null) { // prevents looping on deleting
+        if (songData == null) { // prevents looping on deleting
             log.info("Song with id {} cannot be found", id);
             return;
         }
@@ -159,7 +164,8 @@ public class SongService {
             return null;
         });
 
-        getStorage(songData).deleteSong(songData);
+        storageStrategyRegistry.getStorageStrategy(songData.getStorageType())
+                .deleteSong(songData);
         songApiClient.deleteSongData(id);
     }
 
@@ -173,19 +179,5 @@ public class SongService {
         String contentType = file.getContentType();
         String mimeType = "audio";
         return contentType != null && contentType.startsWith(mimeType);
-    }
-
-    /**
-     * Get storage for song data.
-     *
-     * @param songData specified song
-     * @return song's storage
-     */
-    private StorageStrategy getStorage(SongData songData) {
-        if (songData.getStorageType() == StorageType.S3) {
-            return s3StorageStrategy;
-        } else {
-            return localStorageStrategy;
-        }
     }
 }
