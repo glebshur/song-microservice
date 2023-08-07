@@ -1,7 +1,8 @@
-package shgo.innowise.trainee.songmicroservice.fileapi.service.strategy;
+package shgo.innowise.trainee.songmicroservice.fileapi.service.storage;
 
 import org.springframework.stereotype.Service;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.StorageType;
+import shgo.innowise.trainee.songmicroservice.fileapi.service.storage.strategy.StorageStrategy;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class StorageStrategyRegistry {
      * @param storageType handler type
      * @return storage strategy
      */
-    public StorageStrategy getStorageStrategy(StorageType storageType) {
+    public StorageStrategy getStorageStrategy(final StorageType storageType) {
         return storageStrategyMap.get(storageType);
     }
 
@@ -29,7 +30,7 @@ public class StorageStrategyRegistry {
      * @param type     storage type
      * @param strategy storage strategy
      */
-    public void register(StorageType type, StorageStrategy strategy) {
+    public void register(final StorageType type, final StorageStrategy strategy) {
         storageStrategyMap.put(type, strategy);
     }
 }

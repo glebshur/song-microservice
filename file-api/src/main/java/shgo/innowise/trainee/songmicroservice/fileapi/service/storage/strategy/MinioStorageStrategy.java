@@ -1,4 +1,4 @@
-package shgo.innowise.trainee.songmicroservice.fileapi.service.strategy;
+package shgo.innowise.trainee.songmicroservice.fileapi.service.storage.strategy;
 
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.SongData;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.StorageType;
 import shgo.innowise.trainee.songmicroservice.fileapi.exception.StorageException;
+import shgo.innowise.trainee.songmicroservice.fileapi.service.storage.StorageStrategyRegistry;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;

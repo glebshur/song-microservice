@@ -1,4 +1,4 @@
-package shgo.innowise.trainee.songmicroservice.fileapi.service.strategy;
+package shgo.innowise.trainee.songmicroservice.fileapi.service.storage.strategy;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.SongData;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.StorageType;
+import shgo.innowise.trainee.songmicroservice.fileapi.service.storage.StorageStrategyRegistry;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +24,7 @@ import java.io.IOException;
 @Slf4j
 public class LocalStorageStrategy implements StorageStrategy {
 
-    private ResourceLoader resourceLoader;
+    private final ResourceLoader resourceLoader;
     @Value("${local-base-path:temp-files/songs}")
     private String localBasePath;
     @Value("${files-per-directory:3000}")

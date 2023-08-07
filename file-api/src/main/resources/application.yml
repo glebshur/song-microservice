@@ -32,6 +32,20 @@ spring:
         provider:
           keycloak:
             token-uri: ${KEYCLOAK_TOKEN_URI:http://localhost:8080/realms/song-microservice/protocol/openid-connect/token}
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: superadmin
+
+  data:
+    mongodb:
+      authentication-database: admin
+      host: localhost
+      port: 27017
+      database: file-storage
+      username: admin
+      password: superadmin
 jwt:
   auth:
     converter:
@@ -67,15 +81,24 @@ resilience4j:
 
 local-base-path: temp-files/songs
 files-per-directory: 3000
-bucket-name: file-bucket
-queue-name: file-enricher-queue
+
+aws:
+  s3:
+    bucket-name: file-bucket
+  sqs:
+    queue-name: file-enricher-queue
 
 song-api-name: song-api
 
-main-storage: minio-storage
+main-storage: mongo-storage
 
 minio:
   endpoint: http://localhost:9000
   access-key: Q5keHuvP7E0DTTCYA8Te
   secret-key: fea9nw5p9wTK40V3CVRXhtZDvhZXZwmdhd1qYLqV
   bucket-name: file-bucket
+
+rabbitmq:
+  queue-name: file-enricher-queue
+
+main-sender: rabbitmq-sender

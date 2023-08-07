@@ -69,7 +69,7 @@ public class MetadataProvider {
      * @param metadata metadata
      * @return duration in ms or null, if error occurred
      */
-    private Long getDuration(org.apache.tika.metadata.Metadata metadata){
+    private Long getDuration(final org.apache.tika.metadata.Metadata metadata){
         try {
             Double duration = Double.parseDouble(metadata.get(MetadataFields.DURATION.getCode())) * 1000;
             return duration.longValue();
@@ -85,7 +85,7 @@ public class MetadataProvider {
      * @param metadata file metadata
      * @return release date
      */
-    private LocalDate getReleaseDate(org.apache.tika.metadata.Metadata metadata) {
+    private LocalDate getReleaseDate(final org.apache.tika.metadata.Metadata metadata) {
         LocalDate releaseDate = null;
 
         try {
