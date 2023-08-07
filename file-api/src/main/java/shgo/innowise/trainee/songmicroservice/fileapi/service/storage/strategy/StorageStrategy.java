@@ -1,4 +1,4 @@
-package shgo.innowise.trainee.songmicroservice.fileapi.service.strategy;
+package shgo.innowise.trainee.songmicroservice.fileapi.service.storage.strategy;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;

@@ -30,7 +30,7 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
     @Value("${jwt.auth.converter.principal-attribute}")
     private String principleAttribute;
 
-    private JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter =
+    private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter =
             new JwtGrantedAuthoritiesConverter();
 
     private static final String RESOURCE_ACCESS_CODE = "resource_access";

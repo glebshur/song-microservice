@@ -25,6 +25,8 @@ services:
         condition: service_started
       config-server:
         condition: service_healthy
+      minio:
+        condition: service_started
 
   enricher-service:
     build: ./enricher-service/
@@ -152,7 +154,7 @@ services:
       POSTGRES_PASSWORD: "postgres11"
     volumes:
       - ./postgres/db_init:/docker-entrypoint-initdb.d
-      - pg_data:/var/lib/postgresql/data
+      # - pg_data:/var/lib/postgresql/data
 
   pgadmin:
     container_name: pgadmin
@@ -178,6 +180,30 @@ services:
       MINIO_ROOT_PASSWORD: superadmin
     volumes:
       - minio_data:/data
+  
+  mongodb:
+    image: mongo:7.0-rc-jammy
+    environment:
+      MONGO_INITDB_DATABASE: file-storage
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: superadmin
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data:/data/db
+  
+  rabbitmq:
+    image: rabbitmq:3.12.2-management
+    hostname: rabbitmq
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: superadmin
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit disk_free_limit 2147483648
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    ports:
+      - 15672:15672
 
 volumes:
   file_api_local_data:
@@ -185,3 +211,5 @@ volumes:
   pgadmin-data:
   pg_keycloak_data:
   minio_data:
+  mongodb_data:
+  rabbitmq_data:

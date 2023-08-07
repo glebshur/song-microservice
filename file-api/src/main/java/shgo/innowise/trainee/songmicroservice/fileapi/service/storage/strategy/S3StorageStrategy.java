@@ -1,4 +1,4 @@
-package shgo.innowise.trainee.songmicroservice.fileapi.service.strategy;
+package shgo.innowise.trainee.songmicroservice.fileapi.service.storage.strategy;
 
 import io.awspring.cloud.s3.S3Template;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.SongData;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.StorageType;
 import shgo.innowise.trainee.songmicroservice.fileapi.exception.StorageException;
+import shgo.innowise.trainee.songmicroservice.fileapi.service.storage.StorageStrategyRegistry;
 import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
@@ -28,7 +29,7 @@ import java.io.IOException;
 @Slf4j
 public class S3StorageStrategy implements StorageStrategy {
 
-    @Value("${bucket-name:file-bucket}")
+    @Value("${aws.s3.bucket-name:file-bucket}")
     private String bucketName;
     private final S3Template s3Template;
     private final S3Client s3Client;

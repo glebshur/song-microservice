@@ -18,12 +18,16 @@ import org.xml.sax.SAXException;
 import shgo.innowise.trainee.songmicroservice.fileapi.client.SongApiClient;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.Metadata;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.SongData;
+import shgo.innowise.trainee.songmicroservice.fileapi.entity.SongResponse;
+import shgo.innowise.trainee.songmicroservice.fileapi.exception.SenderException;
 import shgo.innowise.trainee.songmicroservice.fileapi.exception.StorageException;
 import shgo.innowise.trainee.songmicroservice.fileapi.repository.MetadataRepository;
 import shgo.innowise.trainee.songmicroservice.fileapi.repository.SongDataRepository;
-import shgo.innowise.trainee.songmicroservice.fileapi.service.strategy.LocalStorageStrategy;
-import shgo.innowise.trainee.songmicroservice.fileapi.service.strategy.StorageStrategy;
-import shgo.innowise.trainee.songmicroservice.fileapi.service.strategy.StorageStrategyRegistry;
+import shgo.innowise.trainee.songmicroservice.fileapi.service.messagesender.strategy.SenderStrategy;
+import shgo.innowise.trainee.songmicroservice.fileapi.service.messagesender.strategy.SqsSender;
+import shgo.innowise.trainee.songmicroservice.fileapi.service.storage.strategy.LocalStorageStrategy;
+import shgo.innowise.trainee.songmicroservice.fileapi.service.storage.strategy.StorageStrategy;
+import shgo.innowise.trainee.songmicroservice.fileapi.service.storage.StorageStrategyRegistry;
 import software.amazon.awssdk.core.exception.SdkClientException;
 
 import java.io.IOException;
@@ -116,9 +120,9 @@ public class SongService {
      * Downloads file from storage.
      *
      * @param id audio file id
-     * @return audio file
+     * @return audio file with filename
      */
-    public Resource downloadSong(final Long id) {
+    public SongResponse downloadSong(final Long id) {
         SongData songData = songDataRepository.findById(id)
                 .orElseThrow(() -> {
                     String message = "Song with id " + id + " cannot be found";
@@ -141,7 +145,7 @@ public class SongService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "Cannot access file with id " + id);
         }
-        return resource;
+        return new SongResponse(songData.getOriginalName(), resource);
     }
 
     /**

@@ -26,7 +26,7 @@ public class MetadataService {
      * Gets metadata of specified song.
      *
      * @param id song file id
-     * @return
+     * @return metadata
      */
     public Metadata getMetadata(Long id){
         return metadataRepository.findById(id)

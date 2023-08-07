@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import shgo.innowise.trainee.songmicroservice.fileapi.service.strategy.StorageStrategy;
+import shgo.innowise.trainee.songmicroservice.fileapi.service.storage.strategy.StorageStrategy;
 
 /**
  * Configuration of main storage using property file.
