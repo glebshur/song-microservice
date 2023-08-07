@@ -43,7 +43,7 @@ public class SongService {
     private final SongDataRepository songDataRepository;
     private final MetadataRepository metadataRepository;
     private final MetadataProvider metadataProvider;
-    private final SqsProvider sqsProvider;
+    private final SenderStrategy mainSender;
     private final SongApiClient songApiClient;
     private final TransactionTemplate transactionTemplate;
     private final StorageStrategyRegistry storageStrategyRegistry;
@@ -54,7 +54,7 @@ public class SongService {
                        SongDataRepository songDataRepository,
                        MetadataRepository metadataRepository,
                        MetadataProvider metadataProvider,
-                       SqsProvider sqsProvider,
+                       @Qualifier("mainSender") SenderStrategy mainSender,
                        SongApiClient songApiClient,
                        PlatformTransactionManager platformTransactionManager,
                        StorageStrategyRegistry storageStrategyRegistry) {
@@ -63,7 +63,7 @@ public class SongService {
         this.songDataRepository = songDataRepository;
         this.metadataRepository = metadataRepository;
         this.metadataProvider = metadataProvider;
-        this.sqsProvider = sqsProvider;
+        this.mainSender = mainSender;
         this.songApiClient = songApiClient;
         this.transactionTemplate = new TransactionTemplate(platformTransactionManager);
         this.storageStrategyRegistry = storageStrategyRegistry;
@@ -109,8 +109,8 @@ public class SongService {
         log.debug("Metadata for song with id {} was saved to db", metadata.getFileId());
 
         try {
-            sqsProvider.sendSongData(songData);
-        } catch (MessagingOperationFailedException ex) {
+            mainSender.sendSongData(songData);
+        } catch (SenderException ex) {
             log.error("Message sending failed: " + ex.getMessage());
         }
         return songData;
