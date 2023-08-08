@@ -6,22 +6,20 @@ import org.springframework.stereotype.Component;
 import shgo.innowise.trainee.songmicroservice.enricherservice.service.DefaultMetadataProvider;
 
 /**
- * Camel route, that gets file id and file from file api.
+ * Camel route, that retrieves file metadata by id from file api.
  */
 @Component
-public class SqsConsumerRoute extends EndpointRouteBuilder {
-
+public class MetadataRoute extends EndpointRouteBuilder {
     private final DefaultMetadataProvider defaultMetadataProvider;
 
     @Autowired
-    public SqsConsumerRoute(DefaultMetadataProvider defaultMetadataProvider) {
-        super();
+    public MetadataRoute(DefaultMetadataProvider defaultMetadataProvider) {
         this.defaultMetadataProvider = defaultMetadataProvider;
     }
 
     @Override
     public void configure() {
-        from(aws2Sqs("{{consumer-queue}}").deleteAfterRead(true).delay("{{delay:1000}}"))
+        from(direct(RouteNames.METADATA_PROVIDER.getRouteName()))
                 .process(exchange -> exchange.getMessage().setBody(defaultMetadataProvider
                         .getMetadata(exchange.getMessage().getBody(Long.class))))
                 .to(direct(RouteNames.SPOTIFY_ENRICHER.getRouteName()));

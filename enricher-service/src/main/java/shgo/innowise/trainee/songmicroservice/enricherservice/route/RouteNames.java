@@ -10,7 +10,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum RouteNames {
     SPOTIFY_ENRICHER("spotifyEnricher"),
-    SQS_PRODUCER("sqsProducer");
+    MESSAGE_PRODUCER("messageProducer"),
+    METADATA_PROVIDER("metadataProvider");
 
     private final String routeName;
 }

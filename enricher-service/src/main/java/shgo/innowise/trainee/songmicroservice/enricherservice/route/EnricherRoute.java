@@ -78,7 +78,7 @@ public class EnricherRoute extends EndpointRouteBuilder {
                     exchange.getMessage().setBody(fillMetadataWithDefaultValue(exchange.getMessage()
                                 .getHeader(audioMetadataHeader, AudioMetadata.class)));
                 })
-                .to(direct(RouteNames.SQS_PRODUCER.getRouteName()));
+                .to(direct(RouteNames.MESSAGE_PRODUCER.getRouteName()));
     }
 
     private AudioMetadata fillMetadataWithDefaultValue(AudioMetadata metadata) {
