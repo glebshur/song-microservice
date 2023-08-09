@@ -18,6 +18,11 @@ spring:
         provider:
           keycloak:
             token-uri: http://localhost:8080/realms/song-microservice/protocol/openid-connect/token
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: superadmin
 
 jwt:
   auth:
@@ -36,6 +41,8 @@ camel:
   dataformat:
     jackson:
       auto-discover-object-mapper: true
+  springboot:
+    java-routes-exclude-pattern: "**/consumer/*"
 
 server:
   port: 11000
@@ -46,7 +53,14 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
 
-delay: 1000
-consumer-queue: enricher-song-queue
-
 file-api-name: file-api
+
+message-brokers:
+  sqs:
+    delay: 1000
+    consumer-queue: enricher-song-queue
+  rabbitmq:
+    exchange: default
+    consumer-queue: enricher-song-queue
+
+main-consumer-route: rabbitmq-consumer

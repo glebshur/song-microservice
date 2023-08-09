@@ -87,6 +87,11 @@
 			<artifactId>jackson-datatype-jsr310</artifactId>
 			<version>2.14.3</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+			<artifactId>camel-spring-rabbitmq-starter</artifactId>
+			<version>${camel.version}</version>
+		</dependency>
 
 		<!--Feign client with auth-->
 		<dependency>

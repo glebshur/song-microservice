@@ -10,3 +10,6 @@ spring:
         provider:
           keycloak:
             token-uri: http://keycloak:8080/realms/song-microservice/protocol/openid-connect/token
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
