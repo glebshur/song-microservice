@@ -6,6 +6,11 @@ camel:
       region: eu-west-1
       override-endpoint: true
       uri-endpoint-override: http://awslocal:4566
+  dataformat:
+    jackson:
+      auto-discover-object-mapper: true
+  springboot:
+    java-routes-exclude-pattern: "**/consumer/*,**/producer/*"
 
 server:
   port: 10000
@@ -34,13 +39,43 @@ resilience4j:
         sliding-window-size: 10
         sliding-window-type: count_based
 
-delay: 1000
-consumer-queue: file-enricher-queue
-producer-queue: enricher-song-queue
-
 file-api-name: file-api
 
 spotify:
   client-id: 4a67fa16eb1943e581d4853135ad4099
   client-secret: 69d6db9055c64ed88c3fbafcb84227d5
   token-endpoint: https://accounts.spotify.com/api/token
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: enricher-service
+            client-secret: kFRYVVxInxLIETFGGROc3kcaLhaKFcqH
+            authorization-grant-type: client_credentials
+        provider:
+          keycloak:
+            token-uri: ${KEYCLOAK_TOKEN_URI:http://localhost:8080/realms/song-microservice/protocol/openid-connect/token}
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: superadmin
+
+message-brokers:
+  sqs:
+    delay: 1000
+    consumer-queue: file-enricher-queue
+    producer-queue: enricher-song-queue
+  rabbitmq:
+    consumer:
+      exchange: default
+      queue: file-enricher-queue
+    producer:
+      exchange: default
+      queue: enricher-song-queue
+
+main-consumer-route: rabbitmq-consumer
+main-producer-route: rabbitmq-producer
