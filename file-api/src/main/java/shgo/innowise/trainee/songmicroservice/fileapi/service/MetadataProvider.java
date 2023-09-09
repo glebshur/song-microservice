@@ -90,7 +90,7 @@ public class MetadataProvider {
 
         try {
             releaseDate = LocalDate.parse(metadata.get(MetadataFields.RELEASE_DATE.getCode()), dateFormatter);
-        } catch (DateTimeParseException ex) {
+        } catch (DateTimeParseException | NullPointerException ex) {
             log.error("Error during data parsing: " + ex.getMessage());
         }
 
