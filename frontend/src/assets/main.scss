@@ -1,0 +1,14 @@
+.song-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.song-block {
+    display: flex;
+    justify-content: row;
+    width: 22%;
+    margin: 10px;
+    flex-direction: column;
+}
