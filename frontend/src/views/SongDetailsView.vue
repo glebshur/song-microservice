@@ -1,5 +1,5 @@
 <template>
-
+  <Header />
   <div v-if="song">
     <h2>{{ song.name }}</h2>
     <div>
@@ -15,14 +15,21 @@
       Release date - {{ song.releaseDate }}
     </div>
 
-    <button @click="goHome">Home</button>
+    <button v-if="hasUserRole()" @click="download">Download</button>
   </div>
 </template>
 
 <script>
+import Header from '@/components/Header.vue';
+import http from '@/api';
+import { DOWNLOAD_FILE } from '@/api/routes'
+import keycloakService from '@/security/keycloak';
 
 export default {
   name: 'song-details',
+  components: {
+    Header
+  },
   data() {
     return {
       song: null
@@ -34,15 +41,36 @@ export default {
       if(id) {
         const {data} = await this.$store.dispatch('fetchSingleSong', id)
         this.song = data
-        console.log(data)
       }
     } catch(err) {
-      console.log(err)
+      console.error(err)
     }
   },
   methods: {
-    goHome() {
-      this.$router.push({name: 'SongsHome'})
+    hasUserRole() {
+      return keycloakService.hasResourceRole('USER')
+    },
+    parseFilename(response) {
+      let headerLine = response.headers['content-disposition'];
+      let startIndex = headerLine.indexOf('"') + 1
+      let endIndex = headerLine.lastIndexOf('"');
+      return headerLine.substring(startIndex, endIndex);
+    },
+    download() {
+      http.get(DOWNLOAD_FILE(this.song.fileId), {
+        responseType: 'blob',
+      }).then((response) => {
+        let fileURL = window.URL.createObjectURL(new Blob([response.data]));
+        let fileLink = document.createElement('a');
+        
+        fileLink.href = fileURL;
+        fileLink.setAttribute('download', this.parseFilename(response));
+        document.body.appendChild(fileLink);
+   
+        fileLink.click();
+
+        document.body.removeChild(fileLink);
+      })
     }
   }
 }

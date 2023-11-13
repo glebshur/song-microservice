@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <Header /> 
     Songs Microservice
 
     <div>
@@ -30,11 +31,13 @@
 
 <script>
 import SongBlock from '@/components/SongBlock.vue';
+import Header from '@/components/Header.vue';
 
 export default {
   name: 'songs-home-view',
   components: {
-    SongBlock
+    SongBlock,
+    Header
   },
   data() {
     return {
@@ -52,7 +55,6 @@ export default {
   },
   methods: {
     updateSongs(){
-      console.log("searching")
         this.$store.dispatch('fetchSongs', {
           offset: this.currentPage * this.songsPerPage,
           limit: this.songsPerPage,
@@ -75,21 +77,6 @@ export default {
       },
       immediate: true
     },
-    // name: {
-    //   handler() {
-    //     this.updateSongs()
-    //   }
-    // },
-    // artist: {
-    //   handler() {
-    //     this.updateSongs()
-    //   }
-    // },
-    // album: {
-    //   handler() {
-    //     this.updateSongs()
-    //   }
-    // }
   }
 }
 </script>
