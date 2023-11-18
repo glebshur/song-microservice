@@ -102,7 +102,7 @@ public class SongDataService {
 
         log.info("Deleting song data with id {}", id);
         songDataRepository.deleteById(id);
-        fileApiClient.deleteFile(id);
+        fileApiClient.deleteFile(songData.getFileId());
     }
 
     /**
