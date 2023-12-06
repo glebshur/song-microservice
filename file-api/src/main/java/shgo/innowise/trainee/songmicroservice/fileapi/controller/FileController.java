@@ -22,6 +22,7 @@ import shgo.innowise.trainee.songmicroservice.fileapi.entity.SongResponse;
 import shgo.innowise.trainee.songmicroservice.fileapi.service.SongService;
 
 import java.io.IOException;
+import java.security.Principal;
 
 /**
  * Main File API controller.
@@ -42,7 +43,8 @@ public class FileController {
     /**
      * Audio file upload endpoint.
      *
-     * @param song audio file to upload
+     * @param song      audio file to upload
+     * @param principal user principal
      * @return response with success message
      * @throws IOException   file saving error
      * @throws TikaException exception by parsing file
@@ -50,8 +52,9 @@ public class FileController {
      */
     @PostMapping("/upload")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Object> uploadFile(final @RequestParam("song") MultipartFile song) throws IOException, TikaException, SAXException {
-        songService.uploadSong(song);
+    public ResponseEntity<Object> uploadFile(final @RequestParam("song") MultipartFile song,
+                                             Principal principal) throws IOException, TikaException, SAXException {
+        songService.uploadSong(song, principal);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

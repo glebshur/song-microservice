@@ -35,6 +35,7 @@ public class DefaultMetadataProvider {
         audioMetadata.setArtist(metadata.getArtist());
         audioMetadata.setReleaseDate(metadata.getReleaseDate());
         audioMetadata.setDuration(metadata.getDuration());
+        audioMetadata.setUserId(metadata.getUserId());
         return audioMetadata;
     }
 }

@@ -23,4 +23,5 @@ public class SongDataDto {
     private String albumLink;
     private LocalDate releaseDate;
     private Long duration;
+    private String userId;
 }

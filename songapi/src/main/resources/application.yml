@@ -28,7 +28,7 @@ jwt:
   auth:
     converter:
       client-id: song-api
-      principal-attribute: preferred_username
+      principal-attribute: sub
 
 camel:
   component:

@@ -13,8 +13,9 @@ import java.util.List;
 @Repository
 public interface SongDataRepository extends JpaRepository<SongData, Long> {
 
-    List<SongData> findAllByNameContainsAndArtistContainsAndAlbumContains(String namePattern,
+    List<SongData> findAllByNameContainsAndArtistContainsAndAlbumContainsAndUserIdContains(String namePattern,
                                                                           String artistPattern,
                                                                           String albumPattern,
+                                                                          String userId,
                                                                           Pageable pageable);
 }

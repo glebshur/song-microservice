@@ -50,7 +50,7 @@ jwt:
   auth:
     converter:
       client-id: file-api
-      principal-attribute: preferred_username
+      principal-attribute: sub
 
 server:
   port: 9000

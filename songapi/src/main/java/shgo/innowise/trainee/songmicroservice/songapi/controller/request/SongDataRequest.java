@@ -24,4 +24,6 @@ public class SongDataRequest {
     private String artist = "";
     @NotNull(message = "Album mustn't be null")
     private String album = "";
+    @NotNull(message = "User ID mustn't be null")
+    private String userId = "";
 }

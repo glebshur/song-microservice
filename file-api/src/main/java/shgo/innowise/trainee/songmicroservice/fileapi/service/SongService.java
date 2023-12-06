@@ -31,6 +31,7 @@ import shgo.innowise.trainee.songmicroservice.fileapi.service.storage.StorageStr
 import software.amazon.awssdk.core.exception.SdkClientException;
 
 import java.io.IOException;
+import java.security.Principal;
 
 /**
  * Contains main business logic of song processing.
@@ -73,13 +74,14 @@ public class SongService {
      * Uploads song to storage.
      *
      * @param song audio file to upload
+     * @param principal user principal
      * @return song data
      * @throws IOException   error by file uploading
      * @throws TikaException exception by parsing file
      * @throws SAXException  exception by parsing metadata
      */
     @Transactional
-    public SongData uploadSong(final MultipartFile song) throws IOException, TikaException, SAXException {
+    public SongData uploadSong(final MultipartFile song, Principal principal) throws IOException, TikaException, SAXException {
         if (!isAudioFile(song)) {
             String message = song.getOriginalFilename() + " isn't an audio file";
             log.info(message);
@@ -105,6 +107,7 @@ public class SongService {
         log.debug("Data for song {} was saved to db", songData.getOriginalName());
 
         Metadata metadata = metadataProvider.getMetadata(songData.getId(), song.getResource());
+        metadata.setUserId(principal.getName());
         metadata = metadataRepository.save(metadata);
         log.debug("Metadata for song with id {} was saved to db", metadata.getFileId());
 
