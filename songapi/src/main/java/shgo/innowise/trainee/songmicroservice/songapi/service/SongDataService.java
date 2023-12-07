@@ -113,4 +113,23 @@ public class SongDataService {
         log.info("Saving song data with name {}", songData.getName());
         return songDataRepository.save(songData);
     }
+
+    /**
+     * Deletes song data by file id.
+     *
+     * @param fileId file id
+     */
+    public void deleteSongDataByFileId(Long fileId) {
+        SongData songData = songDataRepository.findByFileId(fileId)
+                .orElse(null);
+
+        if (songData == null) { // prevents looping on deletion
+            log.info("Song data with file id {} cannot be found", fileId);
+            return;
+        }
+
+        log.info("Deleting song data with file id {}", fileId);
+        songDataRepository.deleteById(songData.getId());
+        fileApiClient.deleteFile(songData.getFileId());
+    }
 }

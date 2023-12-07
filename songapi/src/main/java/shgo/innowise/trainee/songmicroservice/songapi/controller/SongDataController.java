@@ -82,4 +82,17 @@ public class SongDataController {
     public void deleteSongData(@PathVariable final Long id) {
         songDataService.deleteSongData(id);
     }
+
+    /**
+     * Deletes song data by file id (for calling from file-api).
+     *
+     * @param id file id
+     */
+    @DeleteMapping("/file/{id}/delete")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteSongDataByFile(@PathVariable final Long id) {
+        songDataService.deleteSongDataByFileId(id);
+    }
+
+
 }

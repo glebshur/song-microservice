@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(value = "${song-api-name:song-api}", configuration = SongApiAuthConfiguration.class)
 public interface SongApiClient {
 
-    @DeleteMapping("/songs-data/{id}/delete")
+    @DeleteMapping("/songs-data/file/{id}/delete")
     void deleteSongData(@PathVariable final Long id);
 }

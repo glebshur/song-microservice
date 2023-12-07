@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import shgo.innowise.trainee.songmicroservice.songapi.entity.SongData;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Song data crud repository interface.
@@ -18,4 +19,6 @@ public interface SongDataRepository extends JpaRepository<SongData, Long> {
                                                                           String albumPattern,
                                                                           String userId,
                                                                           Pageable pageable);
+
+    Optional<SongData> findByFileId(Long fileId);
 }
