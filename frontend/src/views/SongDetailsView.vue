@@ -16,13 +16,14 @@
     </div>
 
     <button v-if="hasUserRole()" @click="download">Download</button>
+    <button v-if="hasAdminRole()" @click="deleteSong">Delete</button>
   </div>
 </template>
 
 <script>
 import Header from '@/components/Header.vue';
 import http from '@/api';
-import { DOWNLOAD_FILE } from '@/api/routes'
+import { DELETE_SONG, DOWNLOAD_FILE } from '@/api/routes'
 import keycloakService from '@/security/keycloak';
 
 export default {
@@ -50,6 +51,9 @@ export default {
     hasUserRole() {
       return keycloakService.hasResourceRole('USER')
     },
+    hasAdminRole() {
+      return keycloakService.hasResourceRole('ADMIN')
+    },
     parseFilename(response) {
       let headerLine = response.headers['content-disposition'];
       let startIndex = headerLine.indexOf('"') + 1
@@ -70,6 +74,12 @@ export default {
         fileLink.click();
 
         document.body.removeChild(fileLink);
+      })
+    },
+    deleteSong() {
+      http.delete(DELETE_SONG(this.song.id))
+      .then(() => {
+        this.$router.push({name: 'SongsHome', query: {message: 'Song was deleted!'}})
       })
     }
   }

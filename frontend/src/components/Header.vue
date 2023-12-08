@@ -3,7 +3,7 @@
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li v-if="hasAdminRole"><a href="/song/upload">Upload</a></li>
+                <li v-if="authenticated && hasAdminRole"><a href="/song/upload">Upload</a></li>
             </ul>
             <button v-if="authenticated" @click="logout">Logout</button>
             <button v-else @click="login">Login</button>
@@ -32,7 +32,7 @@ import keycloakService from '@/security/keycloak';
         keycloakService.login({redirectUri: 'http://192.168.86.129:8081/'})
       },
       hasAdminRole(){
-        keycloakService.hasResourceRole('ADMIN')
+        return keycloakService.hasResourceRole('ADMIN')
       }
     },
   };

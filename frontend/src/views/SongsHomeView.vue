@@ -3,6 +3,7 @@
     <Header /> 
     Songs Microservice
 
+    <info-block :message="message"/>
     <div>
       <input type="text" v-model="name" placeholder="Song name..." @keyup.enter="updateSongs"/>
       <input type="text" v-model="artist" placeholder="Artist / Band..." @keyup.enter="updateSongs"/>
@@ -31,13 +32,16 @@
 
 <script>
 import SongBlock from '@/components/SongBlock.vue';
+import InfoBlock from '@/components/InfoBlock.vue';
 import Header from '@/components/Header.vue';
 
 export default {
   name: 'songs-home-view',
   components: {
     SongBlock,
-    Header
+    Header,
+    InfoBlock
+    
   },
   data() {
     return {
@@ -45,7 +49,8 @@ export default {
       name: "",
       artist: "",
       album: "",
-      songsPerPage: 3
+      songsPerPage: 3,
+      message: this.$route.query.message,
     }
   },
   computed: {
