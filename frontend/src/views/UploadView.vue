@@ -98,7 +98,7 @@
           }
         })
         .then(() => {
-          this.info = "File was uploaded, wait for it to show up on the list";
+          this.info = "File was uploaded, wait for it to show up on the your songs list";
           this.file = null;
         })
         .catch(() => {

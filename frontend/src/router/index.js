@@ -3,6 +3,7 @@ import SongsHomeView from '../views/SongsHomeView.vue'
 import SongDetailsView from '../views/SongDetailsView.vue'
 import SongUploadView from '../views/SongUploadView.vue'
 import keycloakService from '@/security/keycloak'
+import MySongsView from '../views/MySongsView.vue'
 
 const routes = [
   {
@@ -19,6 +20,15 @@ const routes = [
     path: '/song/upload',
     name: 'SongUpload',
     component: SongUploadView,
+    meta: {
+      requiresAuth: true,
+      requiredRole: 'ADMIN'
+    }
+  },
+  {
+    path: '/mysongs',
+    name: 'MySongs',
+    component: MySongsView,
     meta: {
       requiresAuth: true,
       requiredRole: 'ADMIN'

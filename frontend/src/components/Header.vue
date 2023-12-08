@@ -4,6 +4,7 @@
             <ul>
                 <li><a href="/">Home</a></li>
                 <li v-if="authenticated && hasAdminRole"><a href="/song/upload">Upload</a></li>
+                <li v-if="authenticated && hasAdminRole"><a href="/mysongs">My Songs</a></li>
             </ul>
             <button v-if="authenticated" @click="logout">Logout</button>
             <button v-else @click="login">Login</button>
