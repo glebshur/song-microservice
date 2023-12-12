@@ -2,7 +2,7 @@ import axios from "axios";
 import keycloakService from "@/security/keycloak";
 
 const http = axios.create({
-    baseURL: 'http://192.168.86.129:8091/'
+    baseURL: process.env.VUE_APP_SONG_API_URL
 })
 
 http.interceptors.request.use(async (config) => {

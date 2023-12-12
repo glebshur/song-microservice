@@ -1,15 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import SongsHomeView from '../views/SongsHomeView.vue'
+import HomeView from '../views/HomeView.vue'
 import SongDetailsView from '../views/SongDetailsView.vue'
-import SongUploadView from '../views/SongUploadView.vue'
+import UploadView from '../views/UploadView.vue'
 import keycloakService from '@/security/keycloak'
 import MySongsView from '../views/MySongsView.vue'
+import UpdateView from '../views/UpdateView.vue'
 
 const routes = [
   {
     path: '/',
     name: 'SongsHome',
-    component: SongsHomeView
+    component: HomeView
   },
   {
     path: '/song/:id',
@@ -19,7 +20,7 @@ const routes = [
   {
     path: '/song/upload',
     name: 'SongUpload',
-    component: SongUploadView,
+    component: UploadView,
     meta: {
       requiresAuth: true,
       requiredRole: 'ADMIN'
@@ -33,7 +34,16 @@ const routes = [
       requiresAuth: true,
       requiredRole: 'ADMIN'
     }
-  }
+  },
+  {
+    path: '/song/:id/update',
+    name: 'SongUpdate',
+    component: UpdateView,
+    meta: {
+      requiresAuth: true,
+      requiredRole: 'ADMIN'
+    }
+  },
 ];
 
 const router = createRouter({

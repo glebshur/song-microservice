@@ -16,6 +16,7 @@
     </div>
 
     <button v-if="hasUserRole()" @click="download">Download</button>
+    <button v-if="hasAdminRole()" @click="redirectToUpdate">Update</button>
     <button v-if="hasAdminRole()" @click="deleteSong">Delete</button>
   </div>
 </template>
@@ -79,8 +80,11 @@ export default {
     deleteSong() {
       http.delete(DELETE_SONG(this.song.id))
       .then(() => {
-        this.$router.push({name: 'SongsHome', query: {message: 'Song was deleted!'}})
+        this.$router.push({name: 'SongsHome', query: {message: 'Song was deleted!'}});
       })
+    },
+    redirectToUpdate() {
+      this.$router.push({path: `/song/${this.song.id}/update`});
     }
   }
 }

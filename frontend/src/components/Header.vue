@@ -3,8 +3,8 @@
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li v-if="authenticated && hasAdminRole"><a href="/song/upload">Upload</a></li>
-                <li v-if="authenticated && hasAdminRole"><a href="/mysongs">My Songs</a></li>
+                <li v-if="hasAdminRole()"><a href="/song/upload">Upload</a></li>
+                <li v-if="hasAdminRole()"><a href="/mysongs">My Songs</a></li>
             </ul>
             <button v-if="authenticated" @click="logout">Logout</button>
             <button v-else @click="login">Login</button>
@@ -27,10 +27,10 @@ import keycloakService from '@/security/keycloak';
     },
     methods: {
       logout() {
-        keycloakService.logout({redirectUri: 'http://192.168.86.129:8081/'});
+        keycloakService.logout({redirectUri: process.env.VUE_APP_BASE_URL});
       },
       login() {
-        keycloakService.login({redirectUri: 'http://192.168.86.129:8081/'})
+        keycloakService.login({redirectUri: process.env.VUE_APP_BASE_URL})
       },
       hasAdminRole(){
         return keycloakService.hasResourceRole('ADMIN')
