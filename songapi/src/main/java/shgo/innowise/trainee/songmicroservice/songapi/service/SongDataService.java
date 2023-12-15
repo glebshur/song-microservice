@@ -13,6 +13,7 @@ import shgo.innowise.trainee.songmicroservice.songapi.dto.SongDataDto;
 import shgo.innowise.trainee.songmicroservice.songapi.entity.SongData;
 import shgo.innowise.trainee.songmicroservice.songapi.repository.OffsetLimitPageRequest;
 import shgo.innowise.trainee.songmicroservice.songapi.repository.SongDataRepository;
+import shgo.innowise.trainee.songmicroservice.songapi.repository.SongDataSpecificationProvider;
 
 import java.util.List;
 
@@ -50,15 +51,15 @@ public class SongDataService {
     }
 
     /**
-     * Retrieves songs data by name, artist and album.
+     * Retrieves songs data by song data request.
      *
      * @param songDataRequest song data retrieval request
      * @return list of song data
      */
     public List<SongData> getAllSongData(@Valid final SongDataRequest songDataRequest) {
-        return songDataRepository.findAllByNameContainsAndArtistContainsAndAlbumContainsAndUserIdContains(songDataRequest.getName(),
-                songDataRequest.getArtist(), songDataRequest.getAlbum(), songDataRequest.getUserId(),
-                new OffsetLimitPageRequest(songDataRequest.getLimit(), songDataRequest.getOffset()));
+        return songDataRepository.findAll(SongDataSpecificationProvider.searchByRequest(songDataRequest),
+                new OffsetLimitPageRequest(songDataRequest.getLimit(), songDataRequest.getOffset()))
+                .getContent();
     }
 
     /**
