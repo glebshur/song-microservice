@@ -69,7 +69,7 @@ public class SongDataService {
      * @param songDataDto dto with data to update
      * @return update song data
      */
-    public SongData updateSongData(final Long id, final SongDataDto songDataDto) {
+    public SongData updateSongData(final Long id, @Valid final SongDataDto songDataDto) {
         SongData songData = songDataRepository.findById(id)
                 .orElseThrow(() -> {
                     String message = "Song data with id " + id + " cannot be found";
@@ -80,6 +80,7 @@ public class SongDataService {
         songData.setName(songDataDto.getName());
         songData.setArtist(songDataDto.getArtist());
         songData.setAlbum(songDataDto.getAlbum());
+        songData.setReleaseDate(songDataDto.getReleaseDate());
 
         log.info("Updating song data with id {}", songData.getId());
         return songDataRepository.save(songData);

@@ -10,5 +10,3 @@ keycloakService.init({
   })
   .then(() => createApp(App).use(store).use(router).mount('#app'))
   .catch((err) => console.log(err));
-
-// createApp(App).use(store).use(router).mount('#app')

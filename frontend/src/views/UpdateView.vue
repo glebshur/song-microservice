@@ -11,6 +11,9 @@
         <div>
             Album - <input type="text" v-model="song.album"/>
         </div>
+        <div>
+          Release date - <input type="date" v-model="song.releaseDate"/>
+        </div>
       <button @click="updateSong">Update</button>
     </div>
   </template>
@@ -50,11 +53,14 @@
             if(this.song.name == "") {
                 errors.push("Name cannot be empty");
             }
-            if(this.song.album == "") {
+            if(this.song.album && this.song.album == "") {
                 errors.push("Album cannot be empty");
             }
             if(this.song.artist == "") {
                 errors.push("Artist cannot be empty");
+            }
+            if(!this.song.releaseDate){
+              errors.push("Please enter release date");
             }
             return errors;
         },
@@ -65,7 +71,8 @@
                 {
                     name: this.song.name, 
                     artist: this.song.artist,
-                    album: this.song.album
+                    album: this.song.album,
+                    releaseDate: this.song.releaseDate
                 }).then(()=>{
                     this.$router.push({path: `/song/${this.song.id}`})
                 }).catch((err) => {
@@ -75,7 +82,7 @@
             } else {
                 this.errors = errors
             }
-        }
+        },
     }
   }
   
