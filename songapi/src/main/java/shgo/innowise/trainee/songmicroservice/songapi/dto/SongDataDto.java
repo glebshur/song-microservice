@@ -29,4 +29,5 @@ public class SongDataDto {
     private LocalDate releaseDate;
     private Long duration;
     private String userId;
+    private String imageLink;
 }
