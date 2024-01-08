@@ -14,8 +14,8 @@ export default createStore({
     }
   },
   actions: {
-    fetchSongs({commit}, { offset, limit, name, artist, album }) {
-      const body = { offset, limit, name, artist, album };
+    fetchSongs({commit}, { offset, limit, name, artist, album, userId }) {
+      const body = { offset, limit, name, artist, album, userId };
       http.post(ALL_SONGS(), body)
         .then(({data}) => {
           commit('setSongs', data);

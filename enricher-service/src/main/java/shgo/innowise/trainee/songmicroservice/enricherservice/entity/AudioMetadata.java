@@ -22,4 +22,6 @@ public class AudioMetadata {
     private String albumLink;
     private LocalDate releaseDate;
     private Long duration;
+    private String userId;
+    private String imageLink;
 }

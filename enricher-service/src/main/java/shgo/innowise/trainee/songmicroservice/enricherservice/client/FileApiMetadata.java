@@ -19,4 +19,5 @@ public class FileApiMetadata {
     private String album;
     private LocalDate releaseDate;
     private Long duration;
+    private String userId;
 }

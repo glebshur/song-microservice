@@ -3,8 +3,6 @@ package shgo.innowise.trainee.songmicroservice.songapi.service;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +13,7 @@ import shgo.innowise.trainee.songmicroservice.songapi.dto.SongDataDto;
 import shgo.innowise.trainee.songmicroservice.songapi.entity.SongData;
 import shgo.innowise.trainee.songmicroservice.songapi.repository.OffsetLimitPageRequest;
 import shgo.innowise.trainee.songmicroservice.songapi.repository.SongDataRepository;
+import shgo.innowise.trainee.songmicroservice.songapi.repository.SongDataSpecificationProvider;
 
 import java.util.List;
 
@@ -52,15 +51,15 @@ public class SongDataService {
     }
 
     /**
-     * Retrieves songs data by name, artist and album.
+     * Retrieves songs data by song data request.
      *
      * @param songDataRequest song data retrieval request
      * @return list of song data
      */
     public List<SongData> getAllSongData(@Valid final SongDataRequest songDataRequest) {
-        return songDataRepository.findAllByNameContainsAndArtistContainsAndAlbumContains(songDataRequest.getName(),
-                songDataRequest.getArtist(), songDataRequest.getAlbum(),
-                new OffsetLimitPageRequest(songDataRequest.getLimit(), songDataRequest.getOffset()));
+        return songDataRepository.findAll(SongDataSpecificationProvider.searchByRequest(songDataRequest),
+                new OffsetLimitPageRequest(songDataRequest.getLimit(), songDataRequest.getOffset()))
+                .getContent();
     }
 
     /**
@@ -70,7 +69,7 @@ public class SongDataService {
      * @param songDataDto dto with data to update
      * @return update song data
      */
-    public SongData updateSongData(final Long id, final SongDataDto songDataDto) {
+    public SongData updateSongData(final Long id, @Valid final SongDataDto songDataDto) {
         SongData songData = songDataRepository.findById(id)
                 .orElseThrow(() -> {
                     String message = "Song data with id " + id + " cannot be found";
@@ -81,6 +80,7 @@ public class SongDataService {
         songData.setName(songDataDto.getName());
         songData.setArtist(songDataDto.getArtist());
         songData.setAlbum(songDataDto.getAlbum());
+        songData.setReleaseDate(songDataDto.getReleaseDate());
 
         log.info("Updating song data with id {}", songData.getId());
         return songDataRepository.save(songData);
@@ -102,7 +102,7 @@ public class SongDataService {
 
         log.info("Deleting song data with id {}", id);
         songDataRepository.deleteById(id);
-        fileApiClient.deleteFile(id);
+        fileApiClient.deleteFile(songData.getFileId());
     }
 
     /**
@@ -114,5 +114,24 @@ public class SongDataService {
     public SongData createSongData(final SongData songData) {
         log.info("Saving song data with name {}", songData.getName());
         return songDataRepository.save(songData);
+    }
+
+    /**
+     * Deletes song data by file id.
+     *
+     * @param fileId file id
+     */
+    public void deleteSongDataByFileId(Long fileId) {
+        SongData songData = songDataRepository.findByFileId(fileId)
+                .orElse(null);
+
+        if (songData == null) { // prevents looping on deletion
+            log.info("Song data with file id {} cannot be found", fileId);
+            return;
+        }
+
+        log.info("Deleting song data with file id {}", fileId);
+        songDataRepository.deleteById(songData.getId());
+        fileApiClient.deleteFile(songData.getFileId());
     }
 }

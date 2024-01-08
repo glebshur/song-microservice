@@ -33,4 +33,6 @@ public class Metadata {
     private LocalDate releaseDate;
     @Column(name = "duration")
     private Long duration;
+    @Column(name = "user_id")
+    private String userId;
 }

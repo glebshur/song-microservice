@@ -97,6 +97,7 @@ public class EnricherRoute extends EndpointRouteBuilder {
         metadata.setArtistLink(trackNode.get("artists").get(0).get("external_urls").get("spotify").asText());
         metadata.setDuration(trackNode.get("duration_ms").asLong());
         metadata.setReleaseDate(getReleaseDate(trackNode));
+        metadata.setImageLink(trackNode.get("album").get("images").get(0).get("url").asText());
         return metadata;
     }
 

@@ -10,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +22,7 @@ import shgo.innowise.trainee.songmicroservice.fileapi.entity.SongResponse;
 import shgo.innowise.trainee.songmicroservice.fileapi.service.SongService;
 
 import java.io.IOException;
+import java.security.Principal;
 
 /**
  * Main File API controller.
@@ -43,7 +43,8 @@ public class FileController {
     /**
      * Audio file upload endpoint.
      *
-     * @param song audio file to upload
+     * @param song      audio file to upload
+     * @param principal user principal
      * @return response with success message
      * @throws IOException   file saving error
      * @throws TikaException exception by parsing file
@@ -51,8 +52,9 @@ public class FileController {
      */
     @PostMapping("/upload")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Object> uploadFile(final @RequestParam("song") MultipartFile song) throws IOException, TikaException, SAXException {
-        songService.uploadSong(song);
+    public ResponseEntity<Object> uploadFile(final @RequestParam("song") MultipartFile song,
+                                             Principal principal) throws IOException, TikaException, SAXException {
+        songService.uploadSong(song, principal);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
