@@ -13,4 +13,9 @@
     flex-direction: column;
 }
 
-@import "~bootstrap/scss/bootstrap";
+.bg-image {
+    background-image: url('https://thumbs2.imgbox.com/53/a3/6llCKSpi_t.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }

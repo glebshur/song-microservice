@@ -1,9 +1,14 @@
 <template>
-    <div>
-      <div>
-        <input type="text" v-model="name" placeholder="Song name..." @keyup.enter="updateSongs"/>
-        <input type="text" v-model="artist" placeholder="Artist / Band..." @keyup.enter="updateSongs"/>
-        <input type="text" v-model="album" placeholder="Album..." @keyup.enter="updateSongs"/>
+    <div class="container-fluid">
+      <div class="row justify-content-center my-2">
+        <div class="col-9">
+          <div class="input-group">
+            <input type="text" class="form-control" v-model="name" placeholder="Song name..." @keyup.enter="updateSongs"/>
+            <input type="text" class="form-control" v-model="artist" placeholder="Artist / Band..." @keyup.enter="updateSongs"/>
+            <input type="text" class="form-control" v-model="album" placeholder="Album..." @keyup.enter="updateSongs"/>
+            <button class="btn btn-primary" @click="updateSongs">Search</button>
+          </div>
+        </div>
       </div>
       
       <div class="song-list">
@@ -17,12 +22,26 @@
         No results found!
       </div>
   
-      <button @click="prevPage" :disabled="currentPage <= 0">
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          <li class="page-item">
+            <button :class="prevButtonClass" @click="prevPage" :disabled="currentPage <= 0">
+              Previous
+            </button>
+          </li>
+          <li class="page-item">
+            <button :class="nextButtonClass" @click="nextPage" :disabled="songs.length < songsPerPage">
+              Next
+            </button>
+          </li>
+        </ul>
+      </nav>
+      <!-- <button @click="prevPage" :disabled="currentPage <= 0">
         Previous
       </button>
       <button @click="nextPage" :disabled="songs.length < songsPerPage">
         Next
-      </button>
+      </button> -->
     </div>
   </template>
   
@@ -55,6 +74,18 @@
     computed: {
       songs() {
         return this.$store.state.songs;
+      },
+      prevButtonClass() {
+        return {
+          'page-link' : true,
+          'disabled' : this.currentPage <= 0
+        }
+      },
+      nextButtonClass() {
+        return {
+          'page-link' : true,
+          'disabled' : !this.songs || this.songs.length < this.songsPerPage
+        }
       }
     },
     methods: {

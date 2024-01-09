@@ -1,10 +1,12 @@
 <template>
-  <div class="home">
+  <div class="container-fluid">
     <Header /> 
-    Songs Microservice
+    <div class="bg-image">
+    <div class="fs-3 text-white">Songs Microservice</div>
 
     <info-block :message="message"/>
-    <songs-viewer :songs-per-page="3"/>
+    <songs-viewer :songs-per-page="5"/>
+    </div>
   </div>
 </template>
 
