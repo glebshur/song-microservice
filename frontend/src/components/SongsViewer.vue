@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
       <div class="row justify-content-center my-2">
-        <div class="col-9">
+        <div class="col-sm-11 col-md-9 col-lg-7 col-xxl-5">
           <div class="input-group">
             <input type="text" class="form-control" v-model="name" placeholder="Song name..." @keyup.enter="updateSongs"/>
             <input type="text" class="form-control" v-model="artist" placeholder="Artist / Band..." @keyup.enter="updateSongs"/>
@@ -23,25 +23,19 @@
       </div>
   
       <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
+        <ul class="pagination justify-content-center ">
           <li class="page-item">
-            <button :class="prevButtonClass" @click="prevPage" :disabled="currentPage <= 0">
+            <button class="page-link btn bg-dark text-primary" :class="prevButtonClass" @click="prevPage" :disabled="currentPage <= 0">
               Previous
             </button>
           </li>
           <li class="page-item">
-            <button :class="nextButtonClass" @click="nextPage" :disabled="songs.length < songsPerPage">
+            <button class="page-link btn bg-dark text-primary" :class="nextButtonClass" @click="nextPage" :disabled="songs.length < songsPerPage">
               Next
             </button>
           </li>
         </ul>
       </nav>
-      <!-- <button @click="prevPage" :disabled="currentPage <= 0">
-        Previous
-      </button>
-      <button @click="nextPage" :disabled="songs.length < songsPerPage">
-        Next
-      </button> -->
     </div>
   </template>
   
@@ -77,13 +71,11 @@
       },
       prevButtonClass() {
         return {
-          'page-link' : true,
           'disabled' : this.currentPage <= 0
         }
       },
       nextButtonClass() {
         return {
-          'page-link' : true,
           'disabled' : !this.songs || this.songs.length < this.songsPerPage
         }
       }

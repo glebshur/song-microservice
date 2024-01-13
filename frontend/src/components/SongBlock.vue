@@ -1,5 +1,5 @@
 <template>
-    <div class="card border-dark text-start m-3" style="width: 25%" @click="detailedInfo">
+    <div class="card border-dark text-start m-3" style="width: 250px;" @click="detailedInfo">
         <img class="card-img-top" :src="getSongImageUrl()"/>
         <div class="card-body">
             <strong class="card-title">
@@ -7,10 +7,7 @@
             </strong>
             <div class="card-text mt-2">
                 <p>
-                    Artist / Band - {{ song.artist }}
-                </p>
-                <p>
-                    Album - {{ song.album }}
+                    {{ song.artist }}
                 </p>
             </div>
         </div>

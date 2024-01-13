@@ -1,7 +1,7 @@
 .song-list {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-evenly;
     flex-wrap: wrap;
 }
 
@@ -14,8 +14,16 @@
 }
 
 .bg-image {
-    background-image: url('https://thumbs2.imgbox.com/53/a3/6llCKSpi_t.jpg');
+    background-image: url('https://images2.imgbox.com/46/eb/5JePxZdT_o.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-  }
+    background-color: #000000;
+    min-height: 100vh;
+}
+
+@import "./abstracts/variables";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/bootstrap";

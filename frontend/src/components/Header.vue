@@ -1,21 +1,23 @@
 <template>
     <header>
-        <nav class="navbar navbar-expand-md bg-light">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
           <div class="container-fluid">
-            <a class="navbar-brand" href="#">Brand</a>
+            <a class="navbar-brand" href="/">
+              <img src="https://thumbs2.imgbox.com/96/ad/OUnIls2P_t.png">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuItems" aria-controls="menuItems" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="menuItems">
               <ul class="navbar-nav me-auto mb-2 mb-md-0">
                   <li class="nav-item">
-                    <a class="nav-link active" href="/">Home</a>
+                    <a class="nav-link active text-primary" href="/">Home</a>
                   </li>
                   <li class="nav-item" v-if="hasAdminRole()">
-                    <a class="nav-link active" href="/song/upload">Upload</a>
+                    <a class="nav-link active text-primary" href="/song/upload">Upload</a>
                   </li>
                   <li class="nav-item" v-if="hasAdminRole()">
-                    <a class="nav-link active" href="/mysongs">My Songs</a>
+                    <a class="nav-link active text-primary" href="/mysongs">My Songs</a>
                   </li>
               </ul>
             </div>
