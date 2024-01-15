@@ -10,6 +10,8 @@
           </div>
         </div>
       </div>
+
+      <error-block :errors="errors"/>
       
       <div class="song-list">
         <song-block v-for="song in songs"
@@ -17,11 +19,7 @@
         :song="song">
         </song-block>
       </div>
-  
-      <div v-if="!songs.length">
-        No results found!
-      </div>
-  
+
       <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center ">
           <li class="page-item">
@@ -41,11 +39,13 @@
   
   <script>
   import SongBlock from '@/components/SongBlock.vue';
+  import ErrorBlock from '@/components/ErrorBlock.vue';
   
   export default {
     name: 'songs-viewer',
     components: {
-      SongBlock
+      SongBlock,
+      ErrorBlock
     },
     props: {
       songsPerPage: {
@@ -62,7 +62,8 @@
         currentPage: 0,
         name: "",
         artist: "",
-        album: ""
+        album: "",
+        errors: null,
       }
     },
     computed: {
@@ -82,14 +83,14 @@
     },
     methods: {
       updateSongs(){
-          this.$store.dispatch('fetchSongs', {
-            offset: this.currentPage * this.songsPerPage,
-            limit: this.songsPerPage,
-            name: this.name,
-            artist: this.artist,
-            album: this.album,
-            userId: this.userId
-          });
+        this.$store.dispatch('fetchSongs', {
+          offset: this.currentPage * this.songsPerPage,
+          limit: this.songsPerPage,
+          name: this.name,
+          artist: this.artist,
+          album: this.album,
+          userId: this.userId
+        });
       },
       prevPage() {
         this.currentPage--;
@@ -105,6 +106,15 @@
         },
         immediate: true
       },
+      songs:{
+        handler() {
+          this.errors = null;
+          if(!this.songs.length){
+            this.errors = ["No results found!"]
+          }
+        },
+        immediate: true
+      }
     }
   }
   </script>
