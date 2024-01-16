@@ -5,7 +5,7 @@
         <error-block :errors="errors"/>
         <div class="p-3 d-flex justify-content-center">
           <div class="p-2 bg-info col-sm-10 col-md-8 col-lg-7 col-xl-6 col-xxl-4 rounded">
-            <img class="w-100 rounded" :src="getSongImageUrl()"/>
+            <img class="w-100 rounded" :src="song.imageLink"/>
             <div class="pt-3 text-dark">
               <table class="table table-info table-borderless text-start">
                 <thead></thead>
@@ -69,6 +69,7 @@
         if(id) {
           const {data} = await this.$store.dispatch('fetchSingleSong', id)
           this.song = data
+          this.song.imageLink = this.getSongImageUrl(); // prevents img from auto changing if url is random
         }
       } catch(err) {
         console.error(err)
