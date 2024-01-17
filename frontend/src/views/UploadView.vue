@@ -10,7 +10,7 @@
         <div id="fileDropZone" class="drop-zone mx-auto text-light fs-5" @dragover.prevent="setActive" @dragenter.prevent="setActive"
         @dragleave.prevent="setInactive" @drop="handleDrop" @click.prevent="handleClick">
           <div v-if="!active">
-            <div>Drag audio file here</div>
+            <div>Drag audio file here or click</div>
             <div><span v-for="extension in allowedExtensions" :key="extension"> .{{ extension }}</span></div>
             <div v-if="file">Choosen file: {{ file.name }}</div>
           </div>

@@ -6,7 +6,7 @@
         <p>Here are the songs you uploaded. Enjoy your playlist!</p>
       </div>
     </div>
-    <songs-viewer :songs-per-page="3" :user-id="userId"/>
+    <songs-viewer :songs-per-page="5" :user-id="userId"/>
   </div>
 </template>
   

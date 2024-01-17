@@ -1,5 +1,5 @@
 <template>
-    <div class="card bg-light border-dark text-start m-3" style="width: 250px;" @click="detailedInfo">
+    <div class="card bg-light border-dark text-start m-3" style="width: 250px; cursor: pointer;" @click="detailedInfo">
         <img class="card-img-top" :src="getSongImageUrl()"/>
         <div class="card-body">
             <strong class="card-title">
