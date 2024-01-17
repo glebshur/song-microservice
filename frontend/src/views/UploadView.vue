@@ -1,18 +1,29 @@
 <template>
   <Header />
-  <info-block :message="info"/>
-  <error-block :errors="errors"/>
-  <div class="drop-zone" @dragover.prevent="setActive" @dragenter.prevent="setActive"
-  @dragleave.prevent="setInactive" @drop="handleDrop">
-    <div v-if="!active">
-      <p>Drag audio file here</p>
-      <p><span v-for="extension in allowedExtensions" :key="extension"> .{{ extension }}</span></p>
+  <div class="bg-image">
+    <info-block :message="info"/>
+    <error-block :errors="errors"/>
+
+    <div class="p-3 d-flex justify-content-center">
+      <div class="p-2 bg-info col-sm-10 col-md-8 col-lg-7 col-xl-6 col-xxl-4 rounded">
+
+        <div id="fileDropZone" class="drop-zone mx-auto text-light fs-5" @dragover.prevent="setActive" @dragenter.prevent="setActive"
+        @dragleave.prevent="setInactive" @drop="handleDrop" @click.prevent="handleClick">
+          <div v-if="!active">
+            <div>Drag audio file here or click</div>
+            <div><span v-for="extension in allowedExtensions" :key="extension"> .{{ extension }}</span></div>
+            <div v-if="file">Choosen file: {{ file.name }}</div>
+          </div>
+          <p class="fs-4" v-else>Drop it!</p>
+        </div>
+        <input id="fileChooser" class="d-none" type="file" @change="handleInputChange"/>
+
+        <div class="pt-2">
+          <button class="btn btn-outline-light" @click="uploadFile">Upload</button>
+        </div>
+      </div>
     </div>
-    <p v-else>Drop it!</p>
   </div>
-  <input type="file" @change="handleInputChange"/>
-  <div v-if="file">Choosen file: {{ file.name }}</div>
-  <button @click="uploadFile">Upload</button>
 </template>
   
 <script>
@@ -42,11 +53,13 @@
     methods: {
     setActive() {
       this.active = true;
+      document.getElementById('fileDropZone').classList.add('dragover');
       clearTimeout(this.activeTimeout);
     },
     setInactive() {
       this.activeTimeout = setTimeout(() => {
         this.active = this.false;
+        document.getElementById('fileDropZone').classList.remove('dragover');
       }, 50)
     },
     handleDrop(event) {
@@ -110,17 +123,9 @@
       }
     
     },
+    handleClick() {
+      document.getElementById('fileChooser').click()
+    }
   }
 };
 </script>
-
-<style>
-.drop-zone {
-  width: 300px;
-  height: 200px;
-  border: 2px dashed gray;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-</style>

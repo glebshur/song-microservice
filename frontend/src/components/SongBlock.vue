@@ -1,16 +1,16 @@
 <template>
-    <div class="song-block" @click="detailedInfo">
-        <!-- <img src="https://i.scdn.co/image/ab67616d0000b273721c52311e729e994613567d"/> -->
-        <img :src="getSongImageUrl()"/>
-        <strong>
-            {{ song.name }}
-        </strong>
-        <span>
-            Artist / Band - {{ song.artist }}
-        </span>
-        <span>
-            Album - {{ song.album }}
-        </span>
+    <div class="card bg-light border-dark text-start m-3" style="width: 250px; cursor: pointer;" @click="detailedInfo">
+        <img class="card-img-top" :src="getSongImageUrl()"/>
+        <div class="card-body">
+            <strong class="card-title">
+                {{ song.name }}
+            </strong>
+            <div class="card-text mt-2">
+                <p>
+                    {{ song.artist }}
+                </p>
+            </div>
+        </div>
     </div>
 </template>
 

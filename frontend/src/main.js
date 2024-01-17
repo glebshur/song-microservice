@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import '@/assets/main.scss'
 import keycloakService from './security/keycloak'
+import "bootstrap/dist/js/bootstrap.js"
 
 keycloakService.init({
     onLoad: 'check-sso',

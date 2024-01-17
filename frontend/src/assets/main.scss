@@ -1,7 +1,7 @@
 .song-list {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-evenly;
     flex-wrap: wrap;
 }
 
@@ -13,4 +13,43 @@
     flex-direction: column;
 }
 
+.bg-image {
+    background-image: url('https://images2.imgbox.com/46/eb/5JePxZdT_o.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: #000000;
+    min-height: 100vh;
+}
+
+.bg-custom-dark {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: #212529;
+    min-height: 100vh;
+}
+
+.drop-zone {
+    height: 300px;
+    border: 3px dashed #bbdafe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #0984ad;
+}
+  
+.drop-zone:hover {
+    background-color: #0a97c7;
+}
+  
+.drop-zone.dragover {
+    background-color: #0a97c7;
+}
+
+@import "./abstracts/variables";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
 @import "~bootstrap/scss/bootstrap";
