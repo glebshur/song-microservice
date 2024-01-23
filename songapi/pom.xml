@@ -125,6 +125,7 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!--Testing-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
