@@ -19,7 +19,7 @@
         <input id="fileChooser" class="d-none" type="file" @change="handleInputChange"/>
 
         <div class="pt-2">
-          <button class="btn btn-outline-light" @click="uploadFile">Upload</button>
+          <button id="uploadButton" class="btn btn-outline-light" @click="uploadFile">Upload</button>
         </div>
       </div>
     </div>

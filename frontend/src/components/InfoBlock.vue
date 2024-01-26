@@ -10,8 +10,7 @@ export default {
     name: 'info-block',
     props: {
         message: {
-            type: String,
-            required: true
+            type: String
         }
     }
 }

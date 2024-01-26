@@ -81,9 +81,6 @@
         if(this.song.name == "") {
           errors.push("Name cannot be empty");
         }
-        if(this.song.album && this.song.album == "") {
-          errors.push("Album cannot be empty");
-        }
         if(this.song.artist == "") {
           errors.push("Artist cannot be empty");
         }

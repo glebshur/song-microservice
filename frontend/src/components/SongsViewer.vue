@@ -6,7 +6,7 @@
             <input type="text" class="form-control" v-model="name" placeholder="Song name..." @keyup.enter="updateSongs"/>
             <input type="text" class="form-control" v-model="artist" placeholder="Artist / Band..." @keyup.enter="updateSongs"/>
             <input type="text" class="form-control" v-model="album" placeholder="Album..." @keyup.enter="updateSongs"/>
-            <button class="btn btn-primary" @click="updateSongs">Search</button>
+            <button id="searchButton" class="btn btn-primary" @click="updateSongs">Search</button>
           </div>
         </div>
       </div>
@@ -23,12 +23,12 @@
       <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center ">
           <li class="page-item">
-            <button class="page-link btn bg-dark text-primary" :class="prevButtonClass" @click="prevPage" :disabled="currentPage <= 0">
+            <button id="prevButton" class="page-link btn bg-dark text-primary" :class="prevButtonClass" @click="prevPage" :disabled="currentPage <= 0">
               Previous
             </button>
           </li>
           <li class="page-item">
-            <button class="page-link btn bg-dark text-primary" :class="nextButtonClass" @click="nextPage" :disabled="songs.length < songsPerPage">
+            <button id="nextButton" class="page-link btn bg-dark text-primary" :class="nextButtonClass" @click="nextPage" :disabled="songs.length < songsPerPage">
               Next
             </button>
           </li>
