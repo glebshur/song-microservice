@@ -22,7 +22,7 @@
                 </tr>
                 <tr>
                   <th scope="row">Duration</th>
-                  <td>{{ getDurationInMinutesAndSeconds() }}</td>
+                  <td id="duration">{{ getDurationInMinutesAndSeconds() }}</td>
                 </tr>
                 <tr>
                   <th scope="row">Release date</th>
@@ -32,9 +32,9 @@
             </table>
           </div>
           <div class="btn-group justify-content-center">
-            <button class="btn btn-outline-light" v-if="hasUserRole()" @click="download">Download</button>
-            <button class="btn btn-outline-light" v-if="hasAdminRole()" @click="redirectToUpdate">Update</button>
-            <button class="btn btn-outline-danger" v-if="hasAdminRole()" @click="deleteSong">Delete</button>
+            <button id="downloadButton" class="btn btn-outline-light" v-if="hasUserRole()" @click="download">Download</button>
+            <button id="updateButton" class="btn btn-outline-light" v-if="hasAdminRole()" @click="redirectToUpdate">Update</button>
+            <button id="deleteButton" class="btn btn-outline-danger" v-if="hasAdminRole()" @click="deleteSong">Delete</button>
           </div>
         </div>
       </div>
@@ -67,7 +67,7 @@ export default {
         this.song = data
       }
     } catch(err) {
-      console.error(err)
+      console.error('Cannot download song')
     }
   },
   methods: {
