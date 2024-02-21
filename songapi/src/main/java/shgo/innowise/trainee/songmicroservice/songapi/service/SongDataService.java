@@ -3,6 +3,7 @@ package shgo.innowise.trainee.songmicroservice.songapi.service;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -54,12 +55,11 @@ public class SongDataService {
      * Retrieves songs data by song data request.
      *
      * @param songDataRequest song data retrieval request
-     * @return list of song data
+     * @return page of song data
      */
-    public List<SongData> getAllSongData(@Valid final SongDataRequest songDataRequest) {
+    public Page<SongData> getAllSongData(@Valid final SongDataRequest songDataRequest) {
         return songDataRepository.findAll(SongDataSpecificationProvider.searchByRequest(songDataRequest),
-                new OffsetLimitPageRequest(songDataRequest.getLimit(), songDataRequest.getOffset()))
-                .getContent();
+                new OffsetLimitPageRequest(songDataRequest.getLimit(), songDataRequest.getOffset()));
     }
 
     /**

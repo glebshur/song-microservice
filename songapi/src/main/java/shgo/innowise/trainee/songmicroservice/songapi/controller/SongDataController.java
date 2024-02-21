@@ -1,6 +1,9 @@
 package shgo.innowise.trainee.songmicroservice.songapi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import shgo.innowise.trainee.songmicroservice.songapi.controller.request.SongDataRequest;
 import shgo.innowise.trainee.songmicroservice.songapi.dto.SongDataDto;
@@ -52,15 +54,20 @@ public class SongDataController {
      * @return list of song data dto
      */
     @PostMapping("/")
-    public List<SongDataDto> getSongsData(@RequestBody SongDataRequest songDataRequest) {
-        List<SongData> songDataList = songDataService.getAllSongData(songDataRequest);
-        return songDataList.stream().map(songDataDtoMapper::songDataToSongDataDto).toList();
+    public ResponseEntity<List<SongDataDto>> getSongsData(@RequestBody SongDataRequest songDataRequest) {
+        final Page<SongData> songDataPage = songDataService.getAllSongData(songDataRequest);
+        final List<SongData> songDataList = songDataPage.getContent();
+        final String contentRange = "" + songDataRequest.getOffset() + "-" +
+                (songDataRequest.getOffset() + songDataList.size() - 1) + "/" + songDataPage.getTotalElements();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_RANGE, contentRange)
+                .body(songDataList.stream().map(songDataDtoMapper::songDataToSongDataDto).toList());
     }
 
     /**
      * Updates song data.
      *
-     * @param id song data id
+     * @param id          song data id
      * @param songDataDto data to update
      * @return updated song data dto
      */
