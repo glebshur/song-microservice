@@ -13,12 +13,12 @@
                 <tr>
                   <th scope="row">Artist / Band</th>
                   <td>{{ song.artist }}</td>
-                  <td><a v-bind:href=song.albumLink>Spotify</a></td>
+                  <td v-if="song.artistLink"><a v-bind:href=song.artistLink>Spotify</a></td>
                 </tr>
                 <tr>
                   <th scope="row">Album</th>
                   <td>{{ song.album }}</td>
-                  <td><a v-bind:href=song.albumLink>Spotify</a></td>
+                  <td v-if="song.albumLink"><a v-bind:href=song.albumLink>Spotify</a></td>
                 </tr>
                 <tr>
                   <th scope="row">Duration</th>
