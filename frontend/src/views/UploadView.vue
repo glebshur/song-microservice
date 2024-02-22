@@ -4,7 +4,7 @@
     <info-block :message="info"/>
     <error-block :errors="errors"/>
 
-    <div class="p-3 d-flex justify-content-center">
+    <div v-if="!downloaded" class="p-3 d-flex justify-content-center">
       <div class="p-2 bg-info col-sm-10 col-md-8 col-lg-7 col-xl-6 col-xxl-4 rounded">
 
         <div id="fileDropZone" class="drop-zone mx-auto text-light fs-5" @dragover.prevent="setActive" @dragenter.prevent="setActive"
@@ -47,7 +47,8 @@
         allowedExtensions: ['mp3', 'ogg', 'wav'],
         maxSize: 15, // size in MBs 
         errors: null,
-        info: null
+        info: null,
+        downloaded: false,
       };
     },
     methods: {
@@ -113,6 +114,7 @@
         .then(() => {
           this.info = "File was uploaded, wait for it to show up on the your songs list";
           this.file = null;
+          this.downloaded = true;
         })
         .catch(() => {
           this.errors = ["File cannot be uploaded, it may have already been uploaded earlier"];
