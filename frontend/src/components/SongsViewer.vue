@@ -20,19 +20,24 @@
         </song-block>
       </div>
 
-      <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center ">
-          <li class="page-item">
-            <button id="prevButton" class="page-link btn bg-dark text-primary" :class="prevButtonClass" @click="prevPage" :disabled="currentPage <= 0">
-              Previous
-            </button>
-          </li>
-          <li class="page-item">
-            <button id="nextButton" class="page-link btn bg-dark text-primary" :class="nextButtonClass" @click="nextPage" :disabled="songs.length < songsPerPage">
-              Next
-            </button>
-          </li>
-        </ul>
+      <nav aria-label="Page navigation" class="col-sm-11 col-md-9 col-lg-7 col-xxl-5 fixed-nav">
+        <div class="pagination justify-content-center btn-group">
+          <button class="page-link btn btn-block bg-dark text-primary" :class="prevButtonClass" @click="firstPage" :disabled="isPrevButtonDisabled">
+            1
+          </button>
+          <button id="prevButton" class="page-link btn btn-block bg-dark text-primary" :class="prevButtonClass" @click="prevPage" :disabled="isPrevButtonDisabled">
+            &lt;&lt;
+          </button>
+          <div class="page-link bg-dark text-primary">
+            {{ currentPage + 1 }}
+          </div>
+          <button id="nextButton" class="page-link btn btn-block bg-dark text-primary" :class="nextButtonClass" @click="nextPage" :disabled="isNextButtonDisabled">
+            >>
+          </button>
+          <button class="page-link btn btn-block bg-dark text-primary" :class="nextButtonClass" @click="lastPage" :disabled="isNextButtonDisabled">
+            {{totalPagesNumber}}
+          </button>
+        </div>
       </nav>
     </div>
   </template>
@@ -70,15 +75,24 @@
       songs() {
         return this.$store.state.songs;
       },
+      totalPagesNumber (){
+        return Math.ceil(this.$store.state.totalSongsNumber / this.songsPerPage);
+      },
       prevButtonClass() {
         return {
-          'disabled' : this.currentPage <= 0
+          'disabled' : this.isPrevButtonDisabled
         }
       },
       nextButtonClass() {
         return {
-          'disabled' : !this.songs || this.songs.length < this.songsPerPage
+          'disabled' : this.isNextButtonDisabled
         }
+      },
+      isPrevButtonDisabled() {
+        return this.currentPage <= 0;
+      },
+      isNextButtonDisabled() {
+        return this.currentPage + 1 >= this.totalPagesNumber;
       }
     },
     methods: {
@@ -97,6 +111,12 @@
       },
       nextPage() {
         this.currentPage++;
+      },
+      firstPage() {
+        this.currentPage = 0;
+      },
+      lastPage() {
+        this.currentPage = this.totalPagesNumber - 1;
       }
     },
     watch: {
@@ -117,5 +137,4 @@
       }
     }
   }
-  </script>
-  
+</script>
