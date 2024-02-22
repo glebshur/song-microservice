@@ -1,3 +1,9 @@
+@import "./abstracts/variables";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/bootstrap";
+
 .song-list {
     display: flex;
     flex-direction: row;
@@ -48,8 +54,10 @@
     background-color: #0a97c7;
 }
 
-@import "./abstracts/variables";
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
-@import "~bootstrap/scss/bootstrap";
+.fixed-nav {
+    position: fixed;
+    width: 350px;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: min-content;
+}

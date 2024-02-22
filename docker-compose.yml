@@ -64,6 +64,15 @@ services:
         condition: service_started
       config-server:
         condition: service_healthy
+  
+  frontend:
+    build: ./frontend/
+    ports: 
+      - 8081:8081
+    depends_on:
+      - file-api
+      - song-api
+      - keycloak
 
   eureka-server:
     build: ./eureka-server/

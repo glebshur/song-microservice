@@ -16,7 +16,7 @@ spring:
           '[/**]':
             allowedOrigins: "*"
             allowedHeaders: "*"
-            exposedHeaders: "Content-Disposition"
+            exposedHeaders: "Content-Disposition,Content-Range"
             allowedMethods:
               - GET
               - POST
