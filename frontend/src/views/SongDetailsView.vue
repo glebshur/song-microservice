@@ -4,7 +4,14 @@
     <div class="bg-image">
       <div class="p-3 d-flex justify-content-center">
         <div class="p-2 bg-info col-sm-10 col-md-8 col-lg-7 col-xl-6 col-xxl-4 rounded">
-          <img class="w-100 rounded" :src="getSongImageUrl()"/>
+
+          <div class="position-relative">
+            <img class="img-fluid w-100 rounded" :src="getSongImageUrl()">
+            <div v-if="hasUserRole()" class="position-absolute top-50 start-50 translate-middle w-75">
+              <AudioPlayer :file-id="song.fileId"/>
+            </div>
+          </div>
+
           <div class="pt-3 text-dark">
             <h2>{{ song.name }}</h2>
             <table class="table table-info table-borderless text-start">
@@ -22,7 +29,7 @@
                 </tr>
                 <tr>
                   <th scope="row">Duration</th>
-                  <td id="duration">{{ getDurationInMinutesAndSeconds() }}</td>
+                  <td id="duration">{{ getDuration() }}</td>
                 </tr>
                 <tr>
                   <th scope="row">Release date</th>
@@ -48,15 +55,18 @@ import http from '@/api';
 import { DELETE_SONG, DOWNLOAD_FILE } from '@/api/routes';
 import keycloakService from '@/security/keycloak';
 import ImageSelector from "@/imageSelector/imageSelector";
+import AudioPlayer from '@/components/AudioPlayer.vue';
 
 export default {
   name: 'song-details',
   components: {
-    Header
-  },
+    Header,
+    AudioPlayer
+},
   data() {
     return {
-      song: null
+      song: null,
+      randomImageUrl: ImageSelector.getRandomImage(),
     }
   },
   async created() {
@@ -109,17 +119,21 @@ export default {
       this.$router.push({path: `/song/${this.song.id}/update`});
     },
     getSongImageUrl() {
-      return this.song.imageLink ? this.song.imageLink : ImageSelector.getRandomImage()
+      return this.song.imageLink ? this.song.imageLink : this.randomImageUrl
     },
-    getDurationInMinutesAndSeconds(){
-      var minutes = Math.floor(this.song.duration / 60000);
-      var seconds = ((this.song.duration % 60000) / 1000).toFixed(0);
+    formatTime(totalSeconds) {
+      var minutes = Math.floor(totalSeconds / 60);
+      var seconds = (totalSeconds % 60).toFixed(0);
       return (
         seconds == 60 ?
         (minutes+1) + ":00" :
         minutes + ":" + (seconds < 10 ? "0" : "") + seconds
       );
-    }
+    },
+    getDuration(){
+      var seconds = (this.song.duration / 1000).toFixed(0);
+      return this.formatTime(seconds)
+    },
   }
 }
 
@@ -129,5 +143,4 @@ export default {
 .bg-image {
   background-image: url('https://images2.imgbox.com/18/62/AJDWt2ve_o.jpg');
 }
-
 </style>
