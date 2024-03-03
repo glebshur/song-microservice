@@ -18,30 +18,30 @@
               <thead></thead>
               <tbody>
                 <tr>
-                  <th scope="row">Artist / Band</th>
+                  <th scope="row">{{$t('songDetails.table.artist')}}</th>
                   <td>{{ song.artist }}</td>
                   <td v-if="song.artistLink"><a v-bind:href=song.artistLink>Spotify</a></td>
                 </tr>
                 <tr>
-                  <th scope="row">Album</th>
+                  <th scope="row">{{$t('songDetails.table.album')}}</th>
                   <td>{{ song.album }}</td>
                   <td v-if="song.albumLink"><a v-bind:href=song.albumLink>Spotify</a></td>
                 </tr>
                 <tr>
-                  <th scope="row">Duration</th>
+                  <th scope="row">{{$t('songDetails.table.duration')}}</th>
                   <td id="duration">{{ getDuration() }}</td>
                 </tr>
                 <tr>
-                  <th scope="row">Release date</th>
+                  <th scope="row">{{$t('songDetails.table.releaseDate')}}</th>
                   <td>{{ song.releaseDate }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <div class="btn-group justify-content-center">
-            <button id="downloadButton" class="btn btn-outline-light" v-if="hasUserRole()" @click="download">Download</button>
-            <button id="updateButton" class="btn btn-outline-light" v-if="hasAdminRole()" @click="redirectToUpdate">Update</button>
-            <button id="deleteButton" class="btn btn-outline-danger" v-if="hasAdminRole()" @click="deleteSong">Delete</button>
+            <button id="downloadButton" class="btn btn-outline-light" v-if="hasUserRole()" @click="download">{{$t('songDetails.buttons.download')}}</button>
+            <button id="updateButton" class="btn btn-outline-light" v-if="hasAdminRole()" @click="redirectToUpdate">{{$t('songDetails.buttons.update')}}</button>
+            <button id="deleteButton" class="btn btn-outline-danger" v-if="hasAdminRole()" @click="deleteSong">{{$t('songDetails.buttons.delete')}}</button>
           </div>
         </div>
       </div>
@@ -56,13 +56,18 @@ import { DELETE_SONG, DOWNLOAD_FILE } from '@/api/routes';
 import keycloakService from '@/security/keycloak';
 import ImageSelector from "@/imageSelector/imageSelector";
 import AudioPlayer from '@/components/AudioPlayer.vue';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'song-details',
+  setup() {
+    const { t } = useI18n({useScope: 'global'});
+    return { t }
+  },
   components: {
     Header,
     AudioPlayer
-},
+  },
   data() {
     return {
       song: null,
@@ -112,7 +117,7 @@ export default {
     deleteSong() {
       http.delete(DELETE_SONG(this.song.id))
       .then(() => {
-        this.$router.push({name: 'SongsHome', query: {message: 'Song was deleted!'}});
+        this.$router.push({name: 'SongsHome', query: {message: this.t('songDetails.messages.deletion')}});
       })
     },
     redirectToUpdate() {

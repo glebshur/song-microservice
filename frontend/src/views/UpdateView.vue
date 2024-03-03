@@ -11,25 +11,25 @@
                 <thead></thead>
                 <tbody>
                   <tr>
-                    <th scope="row">Name</th>
+                    <th scope="row">{{$t('updateView.table.name')}}</th>
                     <td>
                       <input class="form-control bg-light" type="text" v-model="song.name"/>  
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">Artist / Band</th>
+                    <th scope="row">{{$t('updateView.table.artist')}}</th>
                     <td>
                       <input class="form-control bg-light" type="text" v-model="song.artist"/>  
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">Album</th>
+                    <th scope="row">{{$t('updateView.table.album')}}</th>
                     <td>
                       <input class="form-control bg-light" type="text" v-model="song.album"/>  
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">Release date</th>
+                    <th scope="row">{{$t('updateView.table.releaseDate')}}</th>
                     <td>
                       <input class="form-control bg-light" type="date" v-model="song.releaseDate"/>
                     </td>
@@ -50,9 +50,14 @@
   import http from '@/api';
   import { UPDATE_SONG } from '@/api/routes';
   import ImageSelector from "@/imageSelector/imageSelector";
+  import { useI18n } from 'vue-i18n';
   
   export default {
     name: 'song-update',
+    setup() {
+      const { t } = useI18n({useScope: 'global'});
+      return { t }
+    },
     components: {
       Header,
       ErrorBlock
@@ -79,13 +84,13 @@
       validateSongData() {
         let errors = [];
         if(this.song.name == "") {
-          errors.push("Name cannot be empty");
+          errors.push(this.t('updateView.errors.nameEmpty'));
         }
         if(this.song.artist == "") {
-          errors.push("Artist cannot be empty");
+          errors.push(this.t('updateView.errors.artistEmpty'));
         }
         if(!this.song.releaseDate){
-          errors.push("Please enter release date");
+          errors.push(this.t('updateView.errors.releaseDateNull'));
         }
         return errors;
       },
@@ -102,7 +107,7 @@
               this.$router.push({path: `/song/${this.song.id}`})
             }).catch((err) => {
               console.error(err);
-              this.errors = ["Song cannot be updated"];
+              this.errors = [this.t('updateView.errors.updateRequest')];
             })
         } else {
           this.errors = errors
