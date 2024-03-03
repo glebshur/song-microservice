@@ -1,0 +1,84 @@
+{
+    "header": {
+        "home": "Home",
+        "upload": "Upload",
+        "mySongs": "My Songs",
+        "buttons": {
+            "login": "Login",
+            "logout": "Logout"
+        },
+        "changeLanguage": "Change language"
+    },
+
+    "songsViewer": {
+        "search": {
+            "namePlaceholder": "Song name...",
+            "artistPlaceholder": "Artist / Band...",
+            "albumPlaceholder": "Album...",
+            "button": "Search"
+        },
+        "errors": {
+            "notFound": "No results found!"
+        }
+    },
+
+    "home": {
+        "welcomeMessage": "Welcome to Micro Song, a website that not only allows you to share music, but also to have unlimited access to it, as the system is highly reliable thanks to its microservice architecture."
+    },
+
+    "mySongs": {
+        "welcomeMessage": "Here are the songs you uploaded. Enjoy your playlist!"
+    },
+
+    "songDetails": {
+        "table": {
+            "artist": "Artist / Band",
+            "album": "Album",
+            "duration": "Duration",
+            "releaseDate": "Release date"
+        },
+        "buttons": {
+            "download": "Download",
+            "update": "Update",
+            "delete": "Delete"
+        },
+        "messages": {
+            "deletion": "Song was deleted!"
+        }
+    },
+
+    "updateView": {
+        "table": {
+            "name": "Name",
+            "artist": "Artist / Band",
+            "album": "Album",
+            "releaseDate": "Release date"
+        },
+        "errors": {
+            "nameEmpty": "Name cannot be empty",
+            "artistEmpty": "Artist cannot be empty",
+            "releaseDateNull": "Please enter release date",
+            "updateRequest": "Song cannot be updated"
+        }
+    },
+
+    "uploadView": {
+        "dropZone": {
+            "active": "Drop it!",
+            "unactive": "Drag audio file here or click",
+            "choosenFile": "Choosen file:"
+        },
+        "buttons":{
+            "upload": "Upload"
+        },
+        "errors": {
+            "tooLarge": "Max file size in MBs -",
+            "invalidExtension": "File extension is invalid",
+            "uploadingError": "File cannot be uploaded, it may have already been uploaded earlier",
+            "isntChoosen": "Choose file for uploading"
+        },
+        "info": {
+            "fileUploaded": "File was uploaded, wait for it to show up on the your songs list"
+        }
+    }
+}

@@ -3,10 +3,10 @@
       <div class="row justify-content-center my-2">
         <div class="col-sm-11 col-md-9 col-lg-7 col-xxl-5">
           <div class="input-group">
-            <input type="text" class="form-control" v-model="name" placeholder="Song name..." @keyup.enter="updateSongs"/>
-            <input type="text" class="form-control" v-model="artist" placeholder="Artist / Band..." @keyup.enter="updateSongs"/>
-            <input type="text" class="form-control" v-model="album" placeholder="Album..." @keyup.enter="updateSongs"/>
-            <button id="searchButton" class="btn btn-primary" @click="updateSongs">Search</button>
+            <input type="text" class="form-control" v-model="name" :placeholder="$t('songsViewer.search.namePlaceholder')" @keyup.enter="updateSongs"/>
+            <input type="text" class="form-control" v-model="artist" :placeholder="$t('songsViewer.search.artistPlaceholder')" @keyup.enter="updateSongs"/>
+            <input type="text" class="form-control" v-model="album" :placeholder="$t('songsViewer.search.albumPlaceholder')" @keyup.enter="updateSongs"/>
+            <button id="searchButton" class="btn btn-primary" @click="updateSongs">{{$t('songsViewer.search.button')}}</button>
           </div>
         </div>
       </div>
@@ -45,9 +45,14 @@
   <script>
   import SongBlock from '@/components/SongBlock.vue';
   import ErrorBlock from '@/components/ErrorBlock.vue';
+  import { useI18n } from 'vue-i18n';
   
   export default {
     name: 'songs-viewer',
+    setup() {
+      const { t } = useI18n({useScope: 'global'});
+      return { t }
+    },
     components: {
       SongBlock,
       ErrorBlock
@@ -130,7 +135,7 @@
         handler() {
           this.errors = null;
           if(!this.songs.length){
-            this.errors = ["No results found!"]
+            this.errors = [this.t('songsViewer.errors.notFound')]
           }
         },
         immediate: true

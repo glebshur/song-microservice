@@ -1,0 +1,84 @@
+{
+    "header": {
+        "home": "Hauptseite",
+        "upload": "Hochladen",
+        "mySongs": "Meine Songs",
+        "buttons": {
+            "login": "Anmeldung",
+            "logout": "Abmeldung"
+        },
+        "changeLanguage": "Sprache ändern"
+    },
+
+    "songsViewer": {
+        "search": {
+            "namePlaceholder": "Name des Songs...",
+            "artistPlaceholder": "Musiker / Band...",
+            "albumPlaceholder": "Album...",
+            "button": "Suche"
+        },
+        "errors": {
+            "notFound": "Keine Ergebnisse gefunden!"
+        }
+    },
+
+    "home": {
+        "welcomeMessage": "Willkommen bei Micro Song, einer Website, die es Ihnen nicht nur ermöglicht Musik zu teilen, sondern auch unbegrenzt darauf zuzugreifen, da das System dank seiner Microservice-Architektur äußerst zuverlässig ist."
+    },
+
+    "mySongs": {
+        "welcomeMessage": "Hier sind die von Ihnen hochgeladenen Songs. Viel Spaß mit deiner Playlist!"
+    },
+
+    "songDetails": {
+        "table": {
+            "artist": "Musiker / Band",
+            "album": "Album",
+            "duration": "Dauer",
+            "releaseDate": "Veröffentlichungsdatum"
+        },
+        "buttons": {
+            "download": "Herunterladen",
+            "update": "Update",
+            "delete": "Löschen"
+        },
+        "messages": {
+            "deletion": "Song wurde gelöscht!"
+        }
+    },
+
+    "updateView": {
+        "table": {
+            "name": "Name",
+            "artist": "Musiker / Band",
+            "album": "Album",
+            "releaseDate": "Veröffentlichungsdatum"
+        },
+        "errors": {
+            "nameEmpty": "Name darf nicht leer sein",
+            "artistEmpty": "Musiker darf nicht leer sein",
+            "releaseDateNull": "Bitte geben Sie das Veröffentlichungsdatum ein",
+            "updateRequest": "Song kann nicht aktualisiert werden"
+        }
+    },
+
+    "uploadView": {
+        "dropZone": {
+            "active": "Lassen Sie es fallen!",
+            "unactive": "Audiodatei hierher ziehen oder klicken",
+            "choosenFile": "Wählen Sie eine Datei aus:"
+        },
+        "buttons":{
+            "upload": "Hochladen"
+        },
+        "errors": {
+            "tooLarge": "Maximale Dateigröße in MBs -",
+            "invalidExtension": "Dateierweiterung ist ungültig",
+            "uploadingError": "Die Datei kann nicht hochgeladen werden, sie wurde möglicherweise schon früher hochgeladen",
+            "isntChoosen": "Wählen Sie eine Datei zum Hochladen"
+        },
+        "info": {
+            "fileUploaded": "Die Datei wurde hochgeladen, warten Sie, bis sie in der Liste Ihrer Songs auftaucht"
+        }
+    }
+}
