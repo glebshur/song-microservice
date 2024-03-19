@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import shgo.innowise.trainee.songmicroservice.songapi.controller.request.PlaylistRequest;
 import shgo.innowise.trainee.songmicroservice.songapi.dto.PlaylistDto;
 import shgo.innowise.trainee.songmicroservice.songapi.entity.Playlist;
+import shgo.innowise.trainee.songmicroservice.songapi.mapper.PlaylistDtoMapper;
 import shgo.innowise.trainee.songmicroservice.songapi.mapper.SongDataDtoMapper;
 import shgo.innowise.trainee.songmicroservice.songapi.repository.OffsetLimitPageRequest;
 import shgo.innowise.trainee.songmicroservice.songapi.repository.PlaylistRepository;
@@ -21,6 +22,7 @@ import shgo.innowise.trainee.songmicroservice.songapi.repository.specification.P
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Business logic of playlists.
@@ -32,13 +34,17 @@ public class PlaylistService {
 
     private final PlaylistRepository playlistRepository;
     private final SongDataDtoMapper songDataDtoMapper;
+    private final PlaylistDtoMapper playlistDtoMapper;
 
     private static final String ADMIN_ROLE = "ROLE_ADMIN";
 
     @Autowired
-    public PlaylistService(PlaylistRepository playlistRepository, SongDataDtoMapper songDataDtoMapper) {
+    public PlaylistService(PlaylistRepository playlistRepository,
+                           SongDataDtoMapper songDataDtoMapper,
+                           PlaylistDtoMapper playlistDtoMapper) {
         this.playlistRepository = playlistRepository;
         this.songDataDtoMapper = songDataDtoMapper;
+        this.playlistDtoMapper = playlistDtoMapper;
     }
 
     /**
@@ -76,7 +82,7 @@ public class PlaylistService {
      */
     public Playlist createPlaylist(@Valid final PlaylistDto playlistDto,
                                    Principal principal) {
-        Playlist playlist = new Playlist();
+        Playlist playlist = playlistDtoMapper.playlistDtoToPlaylist(playlistDto);
         playlist.setName(playlistDto.getName());
         playlist.setUserId(principal.getName());
 
@@ -131,7 +137,7 @@ public class PlaylistService {
         }
 
         playlist.setName(playlistDto.getName());
-        playlist.setSongs(new ArrayList<>(playlistDto.getSongs().stream()
+        playlist.setSongs(new HashSet<>(playlistDto.getSongs().stream()
                 .map(songDataDtoMapper::songDataDtoToSongData)
                 .toList()));
 

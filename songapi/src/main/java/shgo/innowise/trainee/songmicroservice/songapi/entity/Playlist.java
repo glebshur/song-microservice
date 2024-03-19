@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Groups songs into lists.
@@ -37,5 +37,5 @@ public class Playlist {
             joinColumns = @JoinColumn(name = "pl_id"),
             inverseJoinColumns = @JoinColumn(name = "sd_id")
     )
-    private List<SongData> songs;
+    private Set<SongData> songs;
 }
