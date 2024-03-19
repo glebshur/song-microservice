@@ -5,6 +5,7 @@ import UploadView from '../views/UploadView.vue'
 import keycloakService from '@/security/keycloak'
 import MySongsView from '../views/MySongsView.vue'
 import UpdateView from '../views/UpdateView.vue'
+import PlaylistDetailsView from '../views/PlaylistDetailsView.vue'
 
 const routes = [
   {
@@ -32,7 +33,7 @@ const routes = [
     component: MySongsView,
     meta: {
       requiresAuth: true,
-      requiredRole: 'ADMIN'
+      requiredRole: 'USER'
     }
   },
   {
@@ -44,6 +45,11 @@ const routes = [
       requiredRole: 'ADMIN'
     }
   },
+  {
+    path: '/playlist/:id',
+    name: 'PlaylistDetails',
+    component: PlaylistDetailsView
+  }
 ];
 
 const router = createRouter({

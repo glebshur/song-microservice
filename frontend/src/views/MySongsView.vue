@@ -6,13 +6,27 @@
         <p>{{$t('mySongs.welcomeMessage')}}</p>
       </div>
     </div>
-    <songs-viewer :songs-per-page="5" :user-id="userId"/>
+
+    <div class="py-2">
+      <ul class="nav nav-tabs d-flex justify-content-center">
+        <li v-if="keycloakService.hasResourceRole('ADMIN')" class="nav-item" style="cursor: pointer;">
+          <a class="nav-link" :class="{ active: activeTab === 'songs' }" @click="changeTab('songs')">{{ $t('mySongs.tabs.songs') }}</a>
+        </li>
+        <li class="nav-item" style="cursor: pointer;">
+          <a class="nav-link" :class="{ active: activeTab === 'playlists' }" @click="changeTab('playlists')">{{ $t('mySongs.tabs.playlists') }}</a>
+        </li>
+      </ul>
+    </div>
+
+    <songs-viewer v-show="activeTab === 'songs'" :songs-per-page="5" :user-id="userId"/>
+    <playlists-viewer v-show="activeTab === 'playlists'" :playlists-per-page="5" :user-id="userId"/>
   </div>
 </template>
   
 <script>
   import Header from '@/components/Header.vue';
   import SongsViewer from '@/components/SongsViewer.vue';
+  import PlaylistsViewer from '@/components/PlaylistsViewer.vue';
   import keycloakService from '@/security/keycloak';
   import { useI18n } from 'vue-i18n';
   
@@ -20,19 +34,26 @@
     name: 'songs-home-view',
     setup() {
       const { t } = useI18n({useScope: 'global'});
-      return { t }
+      return { t, keycloakService}
     },
     components: {
       Header,
-      SongsViewer
+      SongsViewer,
+      PlaylistsViewer
       
     },
     data() {
       return {
         message: this.$route.query.message,
-        userId: keycloakService.tokenParsed.sub
+        userId: keycloakService.tokenParsed.sub,
+        activeTab: "playlists"
       }
     },
+    methods: {
+      changeTab(newTab) {
+        this.activeTab = newTab;
+      }
+    }
   }
 </script>
 <style scoped>

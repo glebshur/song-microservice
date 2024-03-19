@@ -2,7 +2,7 @@
     "header": {
         "home": "Hauptseite",
         "upload": "Hochladen",
-        "mySongs": "Meine Songs",
+        "mySongs": "Meine Musik",
         "buttons": {
             "login": "Anmeldung",
             "logout": "Abmeldung"
@@ -23,11 +23,19 @@
     },
 
     "home": {
-        "welcomeMessage": "Willkommen bei Micro Song, einer Website, die es Ihnen nicht nur ermöglicht Musik zu teilen, sondern auch unbegrenzt darauf zuzugreifen, da das System dank seiner Microservice-Architektur äußerst zuverlässig ist."
+        "welcomeMessage": "Willkommen bei Micro Song, einer Website, die es Ihnen nicht nur ermöglicht Musik zu teilen, sondern auch unbegrenzt darauf zuzugreifen, da das System dank seiner Microservice-Architektur äußerst zuverlässig ist.",
+        "tabs": {
+            "songs": "Songs",
+            "playlists": "Playlisten"
+        }
     },
 
     "mySongs": {
-        "welcomeMessage": "Hier sind die von Ihnen hochgeladenen Songs. Viel Spaß mit deiner Playlist!"
+        "welcomeMessage": "Viel Spaß mit deinen Playlisten!",
+        "tabs": {
+            "songs": "Meine Songs",
+            "playlists": "Meine Playlisten"
+        }
     },
 
     "songDetails": {
@@ -43,7 +51,19 @@
             "delete": "Löschen"
         },
         "messages": {
-            "deletion": "Song wurde gelöscht!"
+            "deletion": "Song wurde gelöscht!",
+            "addition": "Song zur Wiedergabeliste hinzugefügt: ",
+            "additionInCreated": "Song zur erstellten Wiedergabeliste hinzugefügt: "
+        },
+        "dropdown": {
+            "title": "Zur Playlist hinzufügen",
+            "create": "Neue Playlist eliste erstellen",
+            "songs":"Songs:"
+        },
+        "errors": {
+            "addToPlaylist": "Fehler beim Hinzufügen zur Playlist",
+            "alreadyAdded": "Dieser Song wurde bereits zur Playlist hinzugefügt",
+            "addToCreatedPlaylist": "Fehler beim Hinzufügen zur erstellten Playlist"
         }
     },
 
@@ -79,6 +99,30 @@
         },
         "info": {
             "fileUploaded": "Die Datei wurde hochgeladen, warten Sie, bis sie in der Liste Ihrer Songs auftaucht"
+        }
+    },
+
+    "playlistBlock": {
+        "songs": "Songs:"
+    },
+
+    "playlistsViewer": {
+        "search": {
+            "namePlaceholder": "Name der Playlist...",
+            "button": "Suche"
+        },
+        "errors": {
+            "notFound": "Keine Ergebnisse gefunden!"
+        }
+    },
+
+    "playlistDetails": {
+        "errors": {
+            "nameEmpty": "Name darf nicht leer sein",
+            "updateRequest": "Playlist kann nicht aktualisiert werden"
+        },
+        "messages": {
+            "deletion": "Playlist wurde gelöscht!"
         }
     }
 }
