@@ -6,9 +6,22 @@
         <p>{{ $t('home.welcomeMessage') }}</p>  
       </div>
     </div>
-        
+
+    <div class="py-2">
+      <ul class="nav nav-tabs d-flex justify-content-center">
+        <li class="nav-item" style="cursor: pointer;">
+          <a class="nav-link" :class="{ active: activeTab === 'songs' }" @click="changeTab('songs')">{{ $t('home.tabs.songs') }}</a>
+        </li>
+        <li class="nav-item" style="cursor: pointer;">
+          <a class="nav-link" :class="{ active: activeTab === 'playlists' }" @click="changeTab('playlists')">{{$t('home.tabs.playlists')}}</a>
+        </li>
+      </ul>
+    </div>
+    
     <info-block :message="message"/>
-    <songs-viewer :songs-per-page="5"/>
+    <songs-viewer v-show="activeTab === 'songs'" :songs-per-page="5"/>
+    <playlists-viewer v-show="activeTab === 'playlists'" :playlists-per-page="5" :personal="false"/>
+
   </div>
 </template>
 
@@ -16,6 +29,7 @@
 import InfoBlock from '@/components/InfoBlock.vue';
 import Header from '@/components/Header.vue';
 import SongsViewer from '@/components/SongsViewer.vue';
+import PlaylistsViewer from '@/components/PlaylistsViewer.vue';
 import { useI18n } from 'vue-i18n';
 
 export default {
@@ -27,13 +41,20 @@ export default {
   components: {
     Header,
     InfoBlock,
-    SongsViewer
+    SongsViewer,
+    PlaylistsViewer
     
   },
   data() {
     return {
       message: this.$route.query.message,
+      activeTab: 'songs',
     }
   },
+  methods: {
+    changeTab(newTab) {
+      this.activeTab = newTab;
+    }
+  }
 }
 </script>

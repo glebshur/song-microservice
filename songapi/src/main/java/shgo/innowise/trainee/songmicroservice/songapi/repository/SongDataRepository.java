@@ -8,7 +8,7 @@ import shgo.innowise.trainee.songmicroservice.songapi.entity.SongData;
 import java.util.Optional;
 
 /**
- * Song data crud repository interface.
+ * Song data jpa repository interface.
  */
 @Repository
 public interface SongDataRepository extends JpaRepository<SongData, Long>,

@@ -1,6 +1,7 @@
 package shgo.innowise.trainee.songmicroservice.songapi.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @Entity
+@EqualsAndHashCode
 public class SongData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

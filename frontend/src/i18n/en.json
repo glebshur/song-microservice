@@ -2,7 +2,7 @@
     "header": {
         "home": "Home",
         "upload": "Upload",
-        "mySongs": "My Songs",
+        "mySongs": "My Music",
         "buttons": {
             "login": "Login",
             "logout": "Logout"
@@ -23,11 +23,19 @@
     },
 
     "home": {
-        "welcomeMessage": "Welcome to Micro Song, a website that not only allows you to share music, but also to have unlimited access to it, as the system is highly reliable thanks to its microservice architecture."
+        "welcomeMessage": "Welcome to Micro Song, a website that not only allows you to share music, but also to have unlimited access to it, as the system is highly reliable thanks to its microservice architecture.",
+        "tabs": {
+            "songs": "Songs",
+            "playlists": "Playlists"
+        }
     },
 
     "mySongs": {
-        "welcomeMessage": "Here are the songs you uploaded. Enjoy your playlist!"
+        "welcomeMessage": "Enjoy your playlists!",
+        "tabs": {
+            "songs": "My Songs",
+            "playlists": "My Playlists"
+        }
     },
 
     "songDetails": {
@@ -43,7 +51,19 @@
             "delete": "Delete"
         },
         "messages": {
-            "deletion": "Song was deleted!"
+            "deletion": "Song was deleted!",
+            "addition": "Song added to playlist: ",
+            "additionInCreated": "Song added to created playlist: "
+        },
+        "dropdown": {
+            "title": "Add to playlist",
+            "create": "Create new playlist",
+            "songs":"songs:"
+        },
+        "errors": {
+            "addToPlaylist": "Error on adding to playlist",
+            "alreadyAdded": "This song has already been added to playlist",
+            "addToCreatedPlaylist": "Error on adding to created playlist"
         }
     },
 
@@ -80,5 +100,33 @@
         "info": {
             "fileUploaded": "File was uploaded, wait for it to show up on the your songs list"
         }
+    },
+
+    "playlistBlock": {
+        "songs": "Songs:"
+    },
+
+    "playlistsViewer": {
+        "search": {
+            "namePlaceholder": "Playlist name...",
+            "button": "Search"
+        },
+        "errors": {
+            "notFound": "No results found!"
+        }
+    },
+
+    "playlistDetails": {
+        "errors": {
+            "nameEmpty": "Name cannot be empty",
+            "updateRequest": "Playlist cannot be updated"
+        },
+        "messages": {
+            "deletion": "Playlist was deleted!"
+        },
+        "buttons": {
+            "delete": "Delete"
+        },
+        "checkbox": "Private"
     }
 }

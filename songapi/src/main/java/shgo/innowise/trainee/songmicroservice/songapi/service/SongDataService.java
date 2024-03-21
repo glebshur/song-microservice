@@ -14,9 +14,7 @@ import shgo.innowise.trainee.songmicroservice.songapi.dto.SongDataDto;
 import shgo.innowise.trainee.songmicroservice.songapi.entity.SongData;
 import shgo.innowise.trainee.songmicroservice.songapi.repository.OffsetLimitPageRequest;
 import shgo.innowise.trainee.songmicroservice.songapi.repository.SongDataRepository;
-import shgo.innowise.trainee.songmicroservice.songapi.repository.SongDataSpecificationProvider;
-
-import java.util.List;
+import shgo.innowise.trainee.songmicroservice.songapi.repository.specification.SongDataSpecificationProvider;
 
 /**
  * Business logic of song data.

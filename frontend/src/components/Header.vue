@@ -16,7 +16,7 @@
                   <li class="nav-item" v-if="hasAdminRole()">
                     <a class="nav-link active text-primary" href="/song/upload">{{ $t('header.upload') }}</a>
                   </li>
-                  <li class="nav-item" v-if="hasAdminRole()">
+                  <li class="nav-item" v-if="hasUserRole()">
                     <a class="nav-link active text-primary" href="/mysongs">{{ $t('header.mySongs') }}</a>
                   </li>
               </ul>
@@ -91,6 +91,9 @@ import { useI18n } from 'vue-i18n';
       },
       hasAdminRole(){
         return keycloakService.hasResourceRole('ADMIN')
+      },
+      hasUserRole(){
+        return keycloakService.hasResourceRole('USER')
       }
     },
   };

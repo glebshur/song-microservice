@@ -12,3 +12,16 @@ CREATE TABLE song_data (
 	user_id VARCHAR(100),
 	image_link VARCHAR(255)
 );
+
+CREATE TABLE playlist (
+	pl_id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	"name" VARCHAR(255),
+	user_id VARCHAR(100),
+	personal BOOLEAN
+);
+
+CREATE TABLE playlist_song_data (
+	pl_id bigint REFERENCES playlist(pl_id),
+	sd_id bigint REFERENCES song_data(sd_id),
+	PRIMARY KEY (pl_id, sd_id)
+);

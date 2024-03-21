@@ -41,6 +41,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(GET, "/songs-data/{id}").permitAll()
                 .requestMatchers(POST, "/songs-data/").permitAll()
+                .requestMatchers(GET, "/playlists/{id}").permitAll()
+                .requestMatchers(POST, "/playlists/").permitAll()
                 .anyRequest()
                 .authenticated();
         http.oauth2ResourceServer()
