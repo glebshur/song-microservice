@@ -1,6 +1,9 @@
 <template>
     <div class="card bg-light border-dark text-start m-3" style="width: 250px; cursor: pointer;" @click="detailedInfo">
-        <img class="card-img-top" :src="randomImageUrl"/>
+        <div class="position-relative">
+            <img class="card-img-top" :src="randomImageUrl"/>
+            <img v-if="playlist.personal" src="/icons/private.svg" class="right-top-image m-2" width="40" height="40">
+        </div>
         <div class="card-body">
             <strong class="card-title">
                 {{ playlist.name }}

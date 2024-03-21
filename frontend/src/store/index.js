@@ -42,8 +42,8 @@ export default createStore({
     fetchSingleSong(_, id) {
       return http.get(SONG_BY_ID(id))
     },
-    fetchPlaylists({commit}, {offset, limit, name, userId}) {
-      const body = { offset, limit, name, userId };
+    fetchPlaylists({commit}, {offset, limit, name, userId, personal}) {
+      const body = { offset, limit, name, userId, personal };
       http.post(ALL_PLAYLISTS(), body, {responseType: 'json'})
         .then(response => {
           const contentRange = response.headers.get('Content-Range');

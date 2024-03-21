@@ -123,6 +123,10 @@
         },
         "messages": {
             "deletion": "Playlist wurde gelöscht!"
-        }
+        },
+        "buttons": {
+            "delete": "Löschen"
+        },
+        "checkbox": "Privat"
     }
 }

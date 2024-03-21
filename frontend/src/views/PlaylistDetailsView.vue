@@ -11,6 +11,7 @@
             <div v-if="hasUserRole()" class="position-absolute top-50 start-50 translate-middle w-75">
               <AudioPlayer :songs="playlist.songs" :visible-name="true"/>
             </div>
+            <img v-if="playlist.personal" src="/icons/private.svg" class="right-top-image m-2" width="50" height="50">
           </div>
 
           <div class="row my-2 align-items-center">
@@ -63,8 +64,15 @@
             </div>
           </div>
 
+          <div v-if="edited" class="d-flex align-items-center mt-1">
+            <input class="form-check-input col-auto" type="checkbox" v-model="playlist.personal">
+            <label class="form-check-label col-auto mx-2 fs-5">
+              {{$t('playlistDetails.checkbox')}}
+            </label>
+          </div>
+
           <button v-if="(hasUserRole() && isOwner()) || hasAdminRole()" id="deleteButton" class="btn btn-outline-danger mt-2" 
-          @click="deletePlaylist">{{$t('songDetails.buttons.delete')}}</button>
+          @click="deletePlaylist">{{$t('playlistDetails.buttons.delete')}}</button>
 
         </div>
       </div>
@@ -100,8 +108,7 @@ export default {
       playlist: null,
       randomImageUrl: ImageSelector.getRandomImage(),
       edited: false,
-      tempName: "",
-      tempSongs: [],
+      tempPlaylist: null,
       errors: null,
     }
   },
@@ -136,8 +143,7 @@ export default {
     },
     startEdit() {
       this.edited = true;
-      this.tempName = this.playlist.name;
-      this.tempSongs = Array.from(this.playlist.songs);
+      this.tempPlaylist = JSON.parse(JSON.stringify(this.playlist));
     },
     validateSongData() {
       let errors = [];
@@ -163,8 +169,7 @@ export default {
         }
       }
       else {
-        this.playlist.name = this.tempName;
-        this.playlist.songs = this.tempSongs;
+        this.playlist = this.tempPlaylist
         this.edited = false;
       }
     },

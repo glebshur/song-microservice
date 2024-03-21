@@ -18,7 +18,7 @@
       </ul>
     </div>
 
-    <songs-viewer v-show="activeTab === 'songs'" :songs-per-page="5" :user-id="userId"/>
+    <songs-viewer v-show="activeTab === 'songs'" :songs-per-page="5" :user-id="userId" :personal="null"/>
     <playlists-viewer v-show="activeTab === 'playlists'" :playlists-per-page="5" :user-id="userId"/>
   </div>
 </template>

@@ -63,6 +63,10 @@
       userId: {
         type: String,
         default: ""
+      },
+      personal: {
+        type: Boolean,
+        default: null
       }
     },
     data() {
@@ -102,7 +106,8 @@
           offset: this.currentPage * this.playlistsPerPage,
           limit: this.playlistsPerPage,
           name: this.name,
-          userId: this.userId
+          userId: this.userId,
+          personal: this.personal
         });
       },
       prevPage() {

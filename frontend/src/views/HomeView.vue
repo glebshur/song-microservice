@@ -20,7 +20,7 @@
     
     <info-block :message="message"/>
     <songs-viewer v-show="activeTab === 'songs'" :songs-per-page="5"/>
-    <playlists-viewer v-show="activeTab === 'playlists'" :playlists-per-page="5"/>
+    <playlists-viewer v-show="activeTab === 'playlists'" :playlists-per-page="5" :personal="false"/>
 
   </div>
 </template>
