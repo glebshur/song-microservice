@@ -16,7 +16,8 @@ CREATE TABLE song_data (
 CREATE TABLE playlist (
 	pl_id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 	"name" VARCHAR(255),
-	user_id VARCHAR(100)
+	user_id VARCHAR(100),
+	personal BOOLEAN
 );
 
 CREATE TABLE playlist_song_data (

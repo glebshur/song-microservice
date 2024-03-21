@@ -42,23 +42,26 @@ public class PlaylistController {
     /**
      * Get playlist by id.
      *
-     * @param id playlist id
+     * @param id        playlist id
+     * @param principal user principal
      * @return playlist dto
      */
     @GetMapping("/{id}")
-    public PlaylistDto getPlaylist(@PathVariable final Long id) {
-        return playlistDtoMapper.playlistToPlaylistDto(playlistService.getPlaylist(id));
+    public PlaylistDto getPlaylist(@PathVariable final Long id, Principal principal) {
+        return playlistDtoMapper.playlistToPlaylistDto(playlistService.getPlaylist(id, principal));
     }
 
     /**
      * Get page with playlists by name patterns and user id.
      *
      * @param playlistRequest request object for retrieving playlists
+     * @param principal       user principal
      * @return list of playlist dto
      */
     @PostMapping("/")
-    public ResponseEntity<List<PlaylistDto>> getPlaylists(@RequestBody final PlaylistRequest playlistRequest) {
-        final Page<Playlist> playlistPage = playlistService.getAllPlaylists(playlistRequest);
+    public ResponseEntity<List<PlaylistDto>> getPlaylists(@RequestBody final PlaylistRequest playlistRequest,
+                                                          Principal principal) {
+        final Page<Playlist> playlistPage = playlistService.getAllPlaylists(playlistRequest, principal);
         final List<Playlist> playlistsList = playlistPage.getContent();
         final String contentRange = "" + playlistRequest.getOffset() + "-" +
                 (playlistRequest.getOffset() + playlistsList.size() - 1) + "/" + playlistPage.getTotalElements();

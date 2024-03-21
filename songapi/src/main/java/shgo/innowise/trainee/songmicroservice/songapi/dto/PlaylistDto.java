@@ -20,4 +20,5 @@ public class PlaylistDto {
     private String name;
     private String userId;
     private List<SongDataDto> songs;
+    private Boolean personal;
 }

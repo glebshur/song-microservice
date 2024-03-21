@@ -33,16 +33,20 @@ public abstract class SpecificationProvider {
      *
      * @param criteriaBuilder criteria builder
      * @param expression field name
-     * @param searchTerm string to be equal
+     * @param searchTerm object to be equal
      * @return predicate, if searchTerm isn't null or empty,
      * otherwise predicate that is always true
      */
     protected static Predicate fieldEquals(final CriteriaBuilder criteriaBuilder,
-                                         final Expression<String> expression,
-                                         final String searchTerm) {
-        if (searchTerm != null && !searchTerm.isEmpty()) {
-            return criteriaBuilder.equal(criteriaBuilder.lower(expression), searchTerm);
+                                         final Expression<Object> expression,
+                                         final Object searchTerm) {
+        if (searchTerm != null && !isEmptyString(searchTerm)) {
+            return criteriaBuilder.equal(expression, searchTerm);
         }
         return criteriaBuilder.conjunction(); // always true
+    }
+
+    private static boolean isEmptyString(Object object){
+        return object instanceof String && ((String) object).isEmpty();
     }
 }

@@ -38,4 +38,5 @@ public class Playlist {
             inverseJoinColumns = @JoinColumn(name = "sd_id")
     )
     private Set<SongData> songs;
+    private Boolean personal;
 }

@@ -13,4 +13,5 @@ import lombok.Setter;
 public class PlaylistRequest extends PaginationRequest {
     private String name;
     private String userId;
+    private Boolean personal;
 }

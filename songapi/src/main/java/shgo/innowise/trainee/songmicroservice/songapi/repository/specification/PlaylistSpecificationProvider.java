@@ -22,7 +22,8 @@ public class PlaylistSpecificationProvider extends SpecificationProvider {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.and(
                         fieldContains(criteriaBuilder, root.get(Playlist_.NAME), request.getName()),
-                        fieldEquals(criteriaBuilder, root.get(Playlist_.USER_ID), request.getUserId())
+                        fieldEquals(criteriaBuilder, root.get(Playlist_.USER_ID), request.getUserId()),
+                        fieldEquals(criteriaBuilder, root.get(Playlist_.PERSONAL), request.getPersonal())
                 );
     }
 }
