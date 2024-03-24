@@ -75,7 +75,7 @@ public class SongServiceTest {
                 fileName,
                 "audio",
                 getClass().getResourceAsStream("/" + fileName));
-        when(songDataRepository.existsByOriginalName(anyString())).thenReturn(true);
+        when(songDataRepository.existsByHash(anyString())).thenReturn(true);
 
         Assertions.assertThrows(ResponseStatusException.class,
                 () -> songService.uploadSong(multipartFile, null));
@@ -88,9 +88,10 @@ public class SongServiceTest {
                 fileName,
                 "audio",
                 getClass().getResourceAsStream("/" + fileName));
-        when(songDataRepository.existsByOriginalName(anyString())).thenReturn(false);
+        when(songDataRepository.existsByHash(anyString())).thenReturn(false);
         SongData songData = new SongData("test", StorageType.LOCAL, "/testAudio.mp3", null);
         songData.setId(1L);
+        when(mainStorage.saveSong(any())).thenReturn(songData);
         when(songDataRepository.save(any())).thenReturn(songData);
         Metadata metadata = new Metadata();
         metadata.setFileId(1L);
