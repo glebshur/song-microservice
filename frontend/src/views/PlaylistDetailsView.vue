@@ -120,7 +120,7 @@ export default {
           this.playlist = response.data;
         })
         .catch(() => {
-          console.error('Cannot get playlist')
+          this.$router.push({ name: 'Error', params: {errorCode: 404} });
         })
     }
   },

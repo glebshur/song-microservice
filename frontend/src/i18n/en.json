@@ -128,5 +128,14 @@
             "delete": "Delete"
         },
         "checkbox": "Private"
+    },
+
+    "errorPage": {
+        "messages": {
+            "default": "Something went wrong, our engineers are already working on it",
+            "unauthorized": "You are unauthorized!",
+            "forbidden": "You don't have enough permissions!",
+            "notFound": "Sorry, page not found!"
+        }
     }
 }
