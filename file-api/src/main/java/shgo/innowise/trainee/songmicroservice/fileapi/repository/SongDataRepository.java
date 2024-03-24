@@ -8,5 +8,5 @@ import shgo.innowise.trainee.songmicroservice.fileapi.entity.SongData;
  */
 public interface SongDataRepository extends CrudRepository<SongData, Long> {
 
-    boolean existsByOriginalName(String originalName);
+    boolean existsByHash(String songHash);
 }

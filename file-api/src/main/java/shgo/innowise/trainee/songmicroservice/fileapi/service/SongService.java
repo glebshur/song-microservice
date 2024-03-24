@@ -1,6 +1,6 @@
 package shgo.innowise.trainee.songmicroservice.fileapi.service;
 
-import io.awspring.cloud.sqs.operations.MessagingOperationFailedException;
+import com.google.common.hash.Hashing;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +24,9 @@ import shgo.innowise.trainee.songmicroservice.fileapi.exception.StorageException
 import shgo.innowise.trainee.songmicroservice.fileapi.repository.MetadataRepository;
 import shgo.innowise.trainee.songmicroservice.fileapi.repository.SongDataRepository;
 import shgo.innowise.trainee.songmicroservice.fileapi.service.messagesender.strategy.SenderStrategy;
-import shgo.innowise.trainee.songmicroservice.fileapi.service.messagesender.strategy.SqsSender;
+import shgo.innowise.trainee.songmicroservice.fileapi.service.storage.StorageStrategyRegistry;
 import shgo.innowise.trainee.songmicroservice.fileapi.service.storage.strategy.LocalStorageStrategy;
 import shgo.innowise.trainee.songmicroservice.fileapi.service.storage.strategy.StorageStrategy;
-import shgo.innowise.trainee.songmicroservice.fileapi.service.storage.StorageStrategyRegistry;
 import software.amazon.awssdk.core.exception.SdkClientException;
 
 import java.io.IOException;
@@ -73,7 +72,7 @@ public class SongService {
     /**
      * Uploads song to storage.
      *
-     * @param song audio file to upload
+     * @param song      audio file to upload
      * @param principal user principal
      * @return song data
      * @throws IOException   error by file uploading
@@ -88,7 +87,8 @@ public class SongService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
         }
 
-        if (songDataRepository.existsByOriginalName(song.getOriginalFilename())) {
+        String songHash = Hashing.sha256().hashBytes(song.getBytes()).toString();
+        if (songDataRepository.existsByHash(songHash)) {
             String message = "Song with name " + song.getOriginalFilename() + " already exists";
             log.info(message);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
@@ -103,6 +103,7 @@ public class SongService {
             songData = localStorageStrategy.saveSong(song);
         }
 
+        songData.setHash(songHash);
         songData = songDataRepository.save(songData);
         log.debug("Data for song {} was saved to db", songData.getOriginalName());
 

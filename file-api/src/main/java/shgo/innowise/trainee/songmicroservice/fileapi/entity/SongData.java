@@ -36,6 +36,9 @@ public class SongData {
     @Column(name = "bucket_name")
     private String bucketName;
 
+    @Column(name = "hash")
+    private String hash;
+
     public SongData(String originalName,
                     StorageType storageType,
                     String path,
