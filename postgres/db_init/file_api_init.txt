@@ -14,5 +14,6 @@ CREATE TABLE song_metadata (
 	artist VARCHAR(250),
 	release_date DATE,
 	duration BIGINT,
-	user_id VARCHAR(100)
+	user_id VARCHAR(100),
+	hash VARCHAR(64)
 );
