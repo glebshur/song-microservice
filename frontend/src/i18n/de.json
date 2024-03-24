@@ -128,5 +128,14 @@
             "delete": "Löschen"
         },
         "checkbox": "Privat"
+    },
+
+    "errorPage": {
+        "messages": {
+            "default": "Irgendetwas ist schief gelaufen, unsere Ingenieure arbeiten bereits daran",
+            "unauthorized": "Sie sind nicht autorisiert!",
+            "forbidden": "Sie haben nicht genug Berechtigungen!",
+            "notFound": "Tut mir leid, Seite nicht gefunden!"
+        }
     }
 }

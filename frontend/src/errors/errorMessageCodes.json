@@ -1,0 +1,5 @@
+{
+    "401": "errorPage.messages.unauthorized",
+    "403": "errorPage.messages.forbidden",
+    "404": "errorPage.messages.notFound"
+}

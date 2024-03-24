@@ -6,6 +6,7 @@ import keycloakService from '@/security/keycloak'
 import MySongsView from '../views/MySongsView.vue'
 import UpdateView from '../views/UpdateView.vue'
 import PlaylistDetailsView from '../views/PlaylistDetailsView.vue'
+import ErrorView from '../views/ErrorView.vue'
 
 const routes = [
   {
@@ -49,6 +50,20 @@ const routes = [
     path: '/playlist/:id',
     name: 'PlaylistDetails',
     component: PlaylistDetailsView
+  },
+  {
+    path: '/error/:errorCode',
+    name: 'Error',
+    component: ErrorView,
+    props: true
+  },
+  {
+    path: '/:catchAll(.*)',
+    name: 'NotFound',
+    component: ErrorView,
+    props: {
+      errorCode: '404'
+    }
   }
 ];
 
@@ -62,7 +77,7 @@ router.beforeEach(async (to, from, next) => {
     if (keycloakService.authenticated) {
       const requiredRole = to.meta.requiredRole
       if(requiredRole && !keycloakService.hasResourceRole(requiredRole)){
-        next("/");
+        next("/error/403");
       }
       else{
         next();

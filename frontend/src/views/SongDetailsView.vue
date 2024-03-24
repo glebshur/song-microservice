@@ -84,8 +84,6 @@
           </div>
 
           <div class="btn-group justify-content-center">
-            <!-- <button id="downloadButton" class="btn btn-outline-light" v-if="hasUserRole()" @click="SongDownloader.download(song)">{{$t('songDetails.buttons.download')}}</button> -->
-            <!-- <button id="updateButton" class="btn btn-outline-light" v-if="hasAdminRole()" @click="redirectToUpdate">{{$t('songDetails.buttons.update')}}</button> -->
             <button id="deleteButton" class="btn btn-outline-danger" v-if="hasAdminRole()" @click="deleteSong">{{$t('songDetails.buttons.delete')}}</button>
           </div>
         </div>
@@ -141,7 +139,7 @@ export default {
         this.getUserPlaylists();
       }
     } catch(err) {
-      console.error('Cannot download song')
+      this.$router.push({ name: 'Error', params: {errorCode: 404} });
     }
   },
   methods: {
