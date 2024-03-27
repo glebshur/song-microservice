@@ -87,7 +87,8 @@ import { useI18n } from 'vue-i18n';
         keycloakService.logout({redirectUri: process.env.VUE_APP_BASE_URL});
       },
       login() {
-        keycloakService.login({redirectUri: process.env.VUE_APP_BASE_URL})
+        const redirectUri = window.location.href;
+        keycloakService.login({ redirectUri });
       },
       hasAdminRole(){
         return keycloakService.hasResourceRole('ADMIN')
