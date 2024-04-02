@@ -2,6 +2,8 @@ import { mount } from '@vue/test-utils';
 import UpdateView from '@/views/UpdateView';
 import Vuex from 'vuex';
 import http from '@/api';
+import { languages, defaultLocale } from '@/i18n'
+import { createI18n } from 'vue-i18n'
 
 jest.mock('@/api', () => ({
     put: jest.fn(() => Promise.resolve())
@@ -13,6 +15,7 @@ describe('UpdateView.vue', () => {
     let song;
     let route;
     let router;
+    let i18n;
 
     beforeEach(() => {
         song = {
@@ -41,15 +44,22 @@ describe('UpdateView.vue', () => {
         };
         router = {
             push: jest.fn()
-        }
+        };
+        i18n = createI18n({
+            legacy: false,
+            locale: defaultLocale,
+            messages: Object.assign(languages)
+        })
+        
     });
 
     it('Displays error when name field is empty', async () => {
         const wrapper = mount(UpdateView, {
             global: {
-                plugins: [store],
+                plugins: [store, i18n],
                 mocks: {
-                    $route: route
+                    $route: route,
+                    $t: (key) => key
                 }
             }
         });
@@ -65,9 +75,10 @@ describe('UpdateView.vue', () => {
     it('Displays error when artist field is empty', async () => {
         const wrapper = mount(UpdateView, {
             global: {
-                plugins: [store],
+                plugins: [store, i18n],
                 mocks: {
-                    $route: route
+                    $route: route,
+                    $t: (key) => key
                 }
             }
         });
@@ -83,9 +94,10 @@ describe('UpdateView.vue', () => {
     it('Displays error when releaseDate field is null', async () => {
         const wrapper = mount(UpdateView, {
             global: {
-                plugins: [store],
+                plugins: [store, i18n],
                 mocks: {
-                    $route: route
+                    $route: route,
+                    $t: (key) => key
                 }
             }
         });
@@ -101,10 +113,11 @@ describe('UpdateView.vue', () => {
     it('Calls http.put and router.push methods on updateSong when there\'s no errors', async () => {
         const wrapper = mount(UpdateView, {
             global: {
-                plugins: [store],
+                plugins: [store, i18n],
                 mocks: {
                     $route: route,
-                    $router: router
+                    $router: router,
+                    $t: (key) => key
                 }
             }
         });
