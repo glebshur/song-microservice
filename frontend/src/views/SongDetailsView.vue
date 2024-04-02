@@ -20,7 +20,7 @@
             <div class="row align-items-center">
               <div class="col-2">
                 <div v-if="hasAdminRole()" >
-                  <button class="btn" @click="redirectToUpdate">
+                  <button id="updateButton" class="btn" @click="redirectToUpdate">
                     <img src="/icons/edit.svg" width="40" height="40">
                   </button>
                 </div>
@@ -32,7 +32,7 @@
 
               <div class="col-2">
                 <div v-if="hasUserRole()">
-                  <button class="btn" @click="SongDownloader.download(song)">
+                  <button id="downloadButton" class="btn" @click="SongDownloader.download(song)">
                     <img src="/icons/download.svg" width="40" height="40">
                   </button>
                 </div>

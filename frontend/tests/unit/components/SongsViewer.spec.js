@@ -1,10 +1,13 @@
 import { mount } from '@vue/test-utils';
 import SongsViewer from '@/components/SongsViewer';
 import Vuex from 'vuex';
+import { languages, defaultLocale } from '@/i18n'
+import { createI18n } from 'vue-i18n'
 
 describe('SongsViewer.vue', () => {
     let actions;
     let store;
+    let i18n;
 
     beforeEach(() => {
         actions = {
@@ -12,10 +15,16 @@ describe('SongsViewer.vue', () => {
         };
         store = new Vuex.Store({
             state: {
-                songs: []
+                songs: [],
+                totalSongsNumber: 3
             },
             actions
-        })
+        });
+        i18n = createI18n({
+            legacy: false,
+            locale: defaultLocale,
+            messages: Object.assign(languages)
+        });
     })
 
     it('Calls the updateSongs method when Enter key is pressed in any input field', () => {
@@ -24,7 +33,7 @@ describe('SongsViewer.vue', () => {
                 songsPerPage: 3,
             },
             global: {
-                plugins: [store]
+                plugins: [store, i18n]
             }
         });
         const updateSongsMock = jest.spyOn(wrapper.vm, 'updateSongs');
@@ -44,7 +53,7 @@ describe('SongsViewer.vue', () => {
                 songsPerPage: 3,
             },
             global: {
-                plugins: [store]
+                plugins: [store, i18n]
             }
         });
         const updateSongsMock = jest.spyOn(wrapper.vm, 'updateSongs');
@@ -60,9 +69,11 @@ describe('SongsViewer.vue', () => {
                 songsPerPage: 3,
             },
             global: {
-                plugins: [store]
+                plugins: [store, i18n]
             }
         });
+
+        // console.log(wrapper.html())
 
         expect(wrapper.find('#prevButton').attributes('disabled')).toBe('');
     }),
@@ -72,9 +83,11 @@ describe('SongsViewer.vue', () => {
                 songsPerPage: 3,
             },
             global: {
-                plugins: [store]
+                plugins: [store, i18n]
             }
         });
+
+        // console.log(wrapper.html())
 
         expect(wrapper.find('#nextButton').attributes('disabled')).toBe('');
     }),
@@ -86,7 +99,8 @@ describe('SongsViewer.vue', () => {
                     {id: 2, name: 'Test'},
                     {id: 3, name: 'Test'},
                     {id: 4, name: 'Test'},
-                ]
+                ],
+                totalSongsNumber: 4
             },
             actions
         })
@@ -96,7 +110,7 @@ describe('SongsViewer.vue', () => {
                 songsPerPage: 3,
             },
             global: {
-                plugins: [testStore]
+                plugins: [testStore, i18n]
             }
         });
 
@@ -108,7 +122,7 @@ describe('SongsViewer.vue', () => {
                 songsPerPage: 3,
             },
             global: {
-                plugins: [store]
+                plugins: [store, i18n]
             }
         });
 
@@ -130,7 +144,7 @@ describe('SongsViewer.vue', () => {
                 songsPerPage: 3,
             },
             global: {
-                plugins: [testStore]
+                plugins: [testStore, i18n]
             }
         });
 

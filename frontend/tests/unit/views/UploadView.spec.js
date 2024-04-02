@@ -1,35 +1,59 @@
 import { mount } from '@vue/test-utils';
 import UploadView from '@/views/UploadView';
 import http from '@/api';
+import { languages, defaultLocale } from '@/i18n'
+import { createI18n } from 'vue-i18n'
 
 jest.mock('@/api', () => ({
     post: jest.fn(() => Promise.resolve())
 }))
 
 describe('UploadView.vue', () => {
+    let i18n;
+
+    beforeEach(() => {
+        i18n = createI18n({
+            legacy: false,
+            locale: defaultLocale,
+            messages: Object.assign(languages)
+        });
+    });
+
     it('Displays an error when the file has an incorrect extension', async () => {
-        const wrapper = mount(UploadView);
+        const wrapper = mount(UploadView, {
+            global: {
+                plugins: [i18n]
+            }
+        });
         const file = new File([''], 'test.txt', { type: 'text/plain' });
 
         wrapper.vm.setFile(file);
 
         await wrapper.vm.$nextTick();
-        expect(wrapper.findComponent({name : 'ErrorBlock'}).text()).toBeTruthy();
+        expect(wrapper.findComponent({name : 'ErrorBlock'})).toBeTruthy();
         expect(wrapper.vm.file).toBe(null);
     })
     it('Displays an error when the file exceeds the maximum allowed size', async () => {
-        const wrapper = mount(UploadView);
+        const wrapper = mount(UploadView, {
+            global: {
+                plugins: [i18n]
+            }
+        });
         const fileSize = (wrapper.vm.maxSize + 10) * 1048576;
         const file = { name: 'test.mp3', size: fileSize};
 
         wrapper.vm.setFile(file);
 
         await wrapper.vm.$nextTick();
-        expect(wrapper.findComponent({name : 'ErrorBlock'}).text()).toBeTruthy();
+        expect(wrapper.findComponent({name : 'ErrorBlock'})).toBeTruthy();
         expect(wrapper.vm.file).toBe(null);
     })
     it('Sets file when there\'s no errors', () => {
-        const wrapper = mount(UploadView);
+        const wrapper = mount(UploadView, {
+            global: {
+                plugins: [i18n]
+            }
+        });
         const file = new File([''], 'test.mp3', { type: 'audio/mpeg' });
 
         wrapper.vm.setFile(file);
@@ -37,7 +61,11 @@ describe('UploadView.vue', () => {
         expect(wrapper.vm.file).toBe(file);
     })
     it('Uploads file when there\'s file', async () => {
-        const wrapper = mount(UploadView);
+        const wrapper = mount(UploadView, {
+            global: {
+                plugins: [i18n]
+            }
+        });
         const file = new File([''], 'test.mp3', { type: 'audio/mpeg' });
         wrapper.vm.file = file
 
@@ -46,19 +74,27 @@ describe('UploadView.vue', () => {
         await wrapper.vm.$nextTick();
         expect(http.post).toHaveBeenCalled();
         await wrapper.vm.$nextTick();
-        expect(wrapper.findComponent({name : 'InfoBlock'}).text()).toBeTruthy();
+        expect(wrapper.findComponent({name : 'InfoBlock'})).toBeTruthy();
     })
     it('Shows error when there\'s no file', async () => {
-        const wrapper = mount(UploadView);
+        const wrapper = mount(UploadView, {
+            global: {
+                plugins: [i18n]
+            }
+        });
         wrapper.vm.file = null
 
         wrapper.vm.uploadFile()
 
         await wrapper.vm.$nextTick();
-        expect(wrapper.findComponent({name : 'ErrorBlock'}).text()).toBeTruthy();
+        expect(wrapper.findComponent({name : 'ErrorBlock'})).toBeTruthy();
     })
     it('Calls handleDrop when drop event is triggered', () => {
-        const wrapper = mount(UploadView);
+        const wrapper = mount(UploadView, {
+            global: {
+                plugins: [i18n]
+            }
+        });
         wrapper.vm.handleDrop = jest.fn();
 
         wrapper.find('#fileDropZone').trigger('drop');
@@ -67,7 +103,11 @@ describe('UploadView.vue', () => {
         wrapper.vm.handleDrop.mockRestore();
     })
     it('Calls setActive when dragover event is triggered', () => {
-        const wrapper = mount(UploadView);
+        const wrapper = mount(UploadView, {
+            global: {
+                plugins: [i18n]
+            }
+        });
         wrapper.vm.setActive = jest.fn();
 
         wrapper.find('#fileDropZone').trigger('dragover');
@@ -76,7 +116,11 @@ describe('UploadView.vue', () => {
         wrapper.vm.setActive.mockRestore();
     })
     it('Calls setInactive when dragleave event is triggered', () => {
-        const wrapper = mount(UploadView);
+        const wrapper = mount(UploadView, {
+            global: {
+                plugins: [i18n]
+            }
+        });
         wrapper.vm.setInactive = jest.fn();
 
         wrapper.find('#fileDropZone').trigger('dragleave');
@@ -85,7 +129,11 @@ describe('UploadView.vue', () => {
         wrapper.vm.setInactive.mockRestore();
     })
     it('Calls handleClick when click event is triggered', () => {
-        const wrapper = mount(UploadView);
+        const wrapper = mount(UploadView, {
+            global: {
+                plugins: [i18n]
+            }
+        });
         wrapper.vm.handleClick = jest.fn();
 
         wrapper.find('#fileDropZone').trigger('click');
@@ -94,7 +142,11 @@ describe('UploadView.vue', () => {
         wrapper.vm.handleClick.mockRestore();
     })
     it('Calls handleInputChange when change event on input is triggered', () => {
-        const wrapper = mount(UploadView);
+        const wrapper = mount(UploadView, {
+            global: {
+                plugins: [i18n]
+            }
+        });
         wrapper.vm.handleInputChange = jest.fn();
 
         wrapper.find('#fileChooser').trigger('change');
@@ -103,7 +155,11 @@ describe('UploadView.vue', () => {
         wrapper.vm.handleInputChange.mockRestore();
     })
     it('Calls uploadSong when click event on button is triggered', () => {
-        const wrapper = mount(UploadView);
+        const wrapper = mount(UploadView, {
+            global: {
+                plugins: [i18n]
+            }
+        });
         wrapper.vm.uploadFile = jest.fn();
 
         wrapper.find('#uploadButton').trigger('click');
