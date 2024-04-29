@@ -7,6 +7,7 @@ import MySongsView from '../views/MySongsView.vue'
 import UpdateView from '../views/UpdateView.vue'
 import PlaylistDetailsView from '../views/PlaylistDetailsView.vue'
 import ErrorView from '../views/ErrorView.vue'
+import AudioEditView from '../views/AudioEditView.vue'
 
 const routes = [
   {
@@ -50,6 +51,15 @@ const routes = [
     path: '/playlist/:id',
     name: 'PlaylistDetails',
     component: PlaylistDetailsView
+  },
+  {
+    path: '/song/:id/edit',
+    name: 'AudioEdit',
+    component: AudioEditView,
+    meta: {
+      requiresAuth: true,
+      requiredRole: 'USER'
+    }
   },
   {
     path: '/error/:errorCode',

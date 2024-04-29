@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
+import shgo.innowise.trainee.songmicroservice.fileapi.controller.request.CutRequest;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.SongResponse;
 import shgo.innowise.trainee.songmicroservice.fileapi.service.SongService;
 
@@ -68,11 +70,7 @@ public class FileController {
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<Resource> downloadFile(final @PathVariable("id") Long id) {
         SongResponse songResponse = songService.downloadSong(id);
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(tika.detect(songResponse.getFilename())))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""
-                        + songResponse.getFilename() + "\"")
-                .body(songResponse.getSong());
+        return getOkResourceResponseWithFilename(songResponse);
     }
 
     /**
@@ -87,4 +85,26 @@ public class FileController {
         songService.deleteSong(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    /**
+     * Audio file cut endpoint.
+     *
+     * @param cutRequest request for audio cutting
+     * @return cut audio file
+     */
+    @PostMapping("/cut")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<Resource> cutSong(final @RequestBody CutRequest cutRequest) {
+        SongResponse songResponse = songService.cutSong(cutRequest);
+        return getOkResourceResponseWithFilename(songResponse);
+    }
+
+    private ResponseEntity<Resource> getOkResourceResponseWithFilename(final SongResponse songResponse) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(tika.detect(songResponse.getFilename())))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""
+                        + songResponse.getFilename() + "\"")
+                .body(songResponse.getSong());
+    }
+
 }

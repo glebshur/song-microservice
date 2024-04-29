@@ -3,6 +3,7 @@ package shgo.innowise.trainee.songmicroservice.fileapi.service;
 import com.google.common.hash.Hashing;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.exception.TikaException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.xml.sax.SAXException;
 import shgo.innowise.trainee.songmicroservice.fileapi.client.SongApiClient;
+import shgo.innowise.trainee.songmicroservice.fileapi.controller.request.CutRequest;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.Metadata;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.SongData;
 import shgo.innowise.trainee.songmicroservice.fileapi.entity.SongResponse;
@@ -47,6 +49,7 @@ public class SongService {
     private final SongApiClient songApiClient;
     private final TransactionTemplate transactionTemplate;
     private final StorageStrategyRegistry storageStrategyRegistry;
+    private final AudioEditor audioEditor;
 
     @Autowired
     public SongService(@Qualifier("mainStorage") StorageStrategy mainStorage,
@@ -57,7 +60,8 @@ public class SongService {
                        @Qualifier("mainSender") SenderStrategy mainSender,
                        SongApiClient songApiClient,
                        PlatformTransactionManager platformTransactionManager,
-                       StorageStrategyRegistry storageStrategyRegistry) {
+                       StorageStrategyRegistry storageStrategyRegistry,
+                       AudioEditor audioEditor) {
         this.mainStorage = mainStorage;
         this.localStorageStrategy = localStorageStrategy;
         this.songDataRepository = songDataRepository;
@@ -67,6 +71,7 @@ public class SongService {
         this.songApiClient = songApiClient;
         this.transactionTemplate = new TransactionTemplate(platformTransactionManager);
         this.storageStrategyRegistry = storageStrategyRegistry;
+        this.audioEditor = audioEditor;
     }
 
     /**
@@ -175,6 +180,20 @@ public class SongService {
         storageStrategyRegistry.getStorageStrategy(songData.getStorageType())
                 .deleteSong(songData);
         songApiClient.deleteSongData(id);
+    }
+
+    /**
+     * Cuts part from song;
+     *
+     * @param cutRequest request with data for cutting
+     * @return cut file with filename
+     */
+    public SongResponse cutSong(final @Valid CutRequest cutRequest) {
+        SongResponse songResponse = downloadSong(cutRequest.getSongId());
+
+        return new SongResponse("cut_" + songResponse.getFilename(),
+                audioEditor.cutAudioFile(songResponse.getSong(), songResponse.getFilename(),
+                        cutRequest.getStartTime(), cutRequest.getEndTime()));
     }
 
     /**

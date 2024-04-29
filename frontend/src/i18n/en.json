@@ -137,5 +137,14 @@
             "forbidden": "You don't have enough permissions!",
             "notFound": "Sorry, page not found!"
         }
+    },
+
+    "audioEditor": {
+        "messages" : {
+            "info" : "Here you can cut part from audio file and download it"
+        },
+        "region" : "Resize or move me",
+        "loop" : "Loop region",
+        "zoom" : "Zoom"
     }
 }

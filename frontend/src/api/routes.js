@@ -11,3 +11,4 @@ export const DELETE_PLAYLIST = (id) => `song-api/playlists/${id}/delete`;
 export const UPLOAD_FILE = () => 'file-api/files/upload';
 export const DOWNLOAD_FILE = (id) => `file-api/files/${id}`;
 export const DELETE_FILE = (id) => `file-api/files/${id}/delete`;
+export const CUT_FILE = ()=> 'file-api/files/cut'
