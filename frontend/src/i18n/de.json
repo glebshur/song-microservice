@@ -137,5 +137,14 @@
             "forbidden": "Sie haben nicht genug Berechtigungen!",
             "notFound": "Tut mir leid, Seite nicht gefunden!"
         }
+    },
+
+    "audioEditor": {
+        "messages" : {
+            "info" : "Hier können Sie einen Teil der Audiodatei ausschneiden und herunterladen"
+        },
+        "region" : "Größe ändern oder verschieben",
+        "loop" : "Loop-Bereich",
+        "zoom" : "Zoom"
     }
 }

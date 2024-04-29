@@ -64,27 +64,38 @@
             </table>
           </div>
 
-          <div v-if="hasUserRole()" class="dropdown my-2">
-            <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {{$t('songDetails.dropdown.title')}}
-            </button>
-            <ul class="dropdown-menu bg-light">
-              <li>
-                <button class="dropdown-item align-items-center" @click="createNewPlaylist()">
-                  <img src="/icons/add.svg" width="30" height="30">
-                  {{$t('songDetails.dropdown.create')}}
+          <div class="row my-2">
+            <div class="col-2">
+              <button class="btn" v-if="hasUserRole()">
+                <img src="/icons/cut.svg" width="40" height="40" @click="redirectToEdit">
+              </button>
+            </div>
+            <div class="col">
+              <div v-if="hasUserRole()" class="dropdown">
+                <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{$t('songDetails.dropdown.title')}}
                 </button>
-              </li>
-              <li v-for="playlist in userPlaylists" :key="playlist.id">
-                <button class="dropdown-item" @click="addToPlaylist(playlist)">
-                  {{ playlist.name }} ({{$t('songDetails.dropdown.songs')}} {{ playlist.songs.length }})
-                </button>
-              </li>
-            </ul>
-          </div>
+                <ul class="dropdown-menu bg-light">
+                  <li>
+                    <button class="dropdown-item align-items-center" @click="createNewPlaylist()">
+                      <img src="/icons/add.svg" width="30" height="30">
+                      {{$t('songDetails.dropdown.create')}}
+                    </button>
+                  </li>
+                  <li v-for="playlist in userPlaylists" :key="playlist.id">
+                    <button class="dropdown-item" @click="addToPlaylist(playlist)">
+                      {{ playlist.name }} ({{$t('songDetails.dropdown.songs')}} {{ playlist.songs.length }})
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
 
-          <div class="btn-group justify-content-center">
-            <button id="deleteButton" class="btn btn-outline-danger" v-if="hasAdminRole()" @click="deleteSong">{{$t('songDetails.buttons.delete')}}</button>
+            <div class="col-2">
+              <button id="deleteButton" class="btn btn-outline-danger" v-if="hasAdminRole()" @click="deleteSong">
+                <img src="/icons/delete2.svg" width="40" height="40">
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -157,6 +168,9 @@ export default {
     },
     redirectToUpdate() {
       this.$router.push({path: `/song/${this.song.id}/update`});
+    },
+    redirectToEdit(){
+      this.$router.push({path: `/song/${this.song.id}/edit`})
     },
     getSongImageUrl() {
       return this.song.imageLink ? this.song.imageLink : this.randomImageUrl

@@ -72,7 +72,9 @@
           </div>
 
           <button v-if="(hasUserRole() && isOwner()) || hasAdminRole()" id="deleteButton" class="btn btn-outline-danger mt-2" 
-          @click="deletePlaylist">{{$t('playlistDetails.buttons.delete')}}</button>
+          @click="deletePlaylist">
+            <img src="/icons/delete2.svg" width="40" height="40">
+          </button>
 
         </div>
       </div>
